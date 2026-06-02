@@ -369,60 +369,85 @@
 </div>
 
 <script>
-// ── Gemini API ──────────────────────────────────────────────
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+// ── Gemini API — auto-fallback antar model gratis ───────────
+const GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/models/";
+// Dicoba urutan dari paling ringan ke berat; skip jika quota habis
+const GEMINI_MODELS = [
+  "gemini-1.5-flash-8b",
+  "gemini-1.5-flash",
+  "gemini-1.5-flash-latest",
+  "gemini-1.5-pro",
+];
+let activeModel = GEMINI_MODELS[0];
 
 function getKey(){ return document.getElementById('f-apikey').value.trim(); }
 
 function toggleVis(){
   const inp=document.getElementById('f-apikey'), btn=document.getElementById('eye-btn');
-  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
-  else{inp.type='password';btn.textContent='👁';}
+  if(inp.type==='password'){inp.type='text';btn.textContent='\u{1F648}';}
+  else{inp.type='password';btn.textContent='\u{1F441}';}
+}
+
+function isQuota(msg){
+  return msg&&(msg.includes('quota')||msg.includes('Quota')||msg.includes('RESOURCE_EXHAUSTED')||msg.includes('limit: 0')||msg.includes('exceeded'));
+}
+
+async function tryModels(bodyText, maxTok){
+  const key=getKey();
+  for(const model of GEMINI_MODELS){
+    const url=GEMINI_BASE+model+':generateContent?key='+key;
+    try{
+      const r=await fetch(url,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:[{parts:[{text:bodyText}]}],generationConfig:{maxOutputTokens:maxTok||4000,temperature:0.7}})
+      });
+      const d=await r.json();
+      if(r.ok&&d.candidates){
+        activeModel=model;
+        return{ok:true,model,text:d.candidates[0]?.content?.parts?.[0]?.text||''};
+      }
+      const em=d.error?.message||'';
+      if(isQuota(em)){console.warn('Quota habis: '+model+', coba berikutnya...');continue;}
+      return{ok:false,error:em||('HTTP '+r.status)};
+    }catch(e){console.warn('Error '+model+': '+e.message);continue;}
+  }
+  return{ok:false,error:'QUOTA_ALL'};
 }
 
 async function testKey(){
   const key=getKey();
-  const st=document.getElementById('api-status'), btn=document.getElementById('btn-test');
+  const st=document.getElementById('api-status'),btn=document.getElementById('btn-test');
   st.style.display='block';
-  if(!key){st.style.background='#fef2f2';st.style.color='#dc2626';st.innerHTML='⚠ Masukkan API key terlebih dahulu';return;}
+  if(!key){st.style.background='#fef2f2';st.style.color='#dc2626';st.innerHTML='&#9888; Masukkan API key terlebih dahulu';return;}
   btn.disabled=true;btn.textContent='Menguji...';
-  st.style.background='#f0f9ff';st.style.color='#0369a1';st.innerHTML='⏳ Menghubungi Google Gemini...';
-  try{
-    const r=await fetch(GEMINI_URL+'?key='+key,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:[{text:'Halo, jawab dengan kata: OK'}]}],generationConfig:{maxOutputTokens:5}})
-    });
-    const d=await r.json();
-    if(r.ok && d.candidates){
-      st.style.background='#f0fdf4';st.style.color='#166534';
-      st.innerHTML='✅ Koneksi berhasil! API key valid dan siap digunakan. Silakan isi form di bawah.';
-    } else {
-      st.style.background='#fef2f2';st.style.color='#dc2626';
-      st.innerHTML='❌ API key tidak valid: '+(d.error?.message||'Periksa kembali API key Anda');
-    }
-  }catch(e){
+  st.style.background='#f0f9ff';st.style.color='#0369a1';st.innerHTML='&#9203; Mencari model Gemini yang tersedia...';
+  const res=await tryModels('Halo, balas satu kata: OK',5);
+  if(res.ok){
+    st.style.background='#f0fdf4';st.style.color='#166534';
+    st.innerHTML='&#9989; Koneksi berhasil pakai model <strong>'+res.model+'</strong>. API key valid, silakan isi form dan generate RPM!';
+  } else if(res.error==='QUOTA_ALL'){
+    st.style.background='#fffbeb';st.style.color='#92400e';
+    st.innerHTML='<strong>&#9888;&#65039; Quota harian gratis habis</strong> — semua model gratis sedang di-reset Google.<br><br>'
+      +'<strong>Solusi:</strong><br>'
+      +'&bull; Tunggu 24 jam, quota reset otomatis setiap hari<br>'
+      +'&bull; Buat API key baru di <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#1a3a5c;font-weight:700">aistudio.google.com/apikey</a> dengan akun Google lain<br>'
+      +'&bull; Aktifkan billing Google Cloud (ada free credit $300 untuk akun baru)';
+  } else {
     st.style.background='#fef2f2';st.style.color='#dc2626';
-    st.innerHTML='❌ Gagal terhubung: '+e.message;
+    st.innerHTML='&#10060; Gagal: '+res.error+'<br><small>Pastikan API key diawali <code>AIza</code> dan tidak ada spasi</small>';
   }
-  btn.disabled=false;btn.textContent='✓ Uji Koneksi';
+  btn.disabled=false;btn.textContent='&#10003; Uji Koneksi';
 }
 
 async function callAI(prompt){
-  const key=getKey();
-  const sys=`Anda adalah ahli kurikulum Nasional Indonesia dan instructional designer profesional. Hasilkan konten RPM (Rencana Pembelajaran Mendalam) yang komprehensif dalam bahasa Indonesia baku (EYD). Istilah asing ditulis miring. KRITIS: Jawab HANYA dengan JSON valid murni. Tanpa markdown, tanpa komentar, tanpa teks apapun di luar kurung kurawal JSON.`;
-  const r=await fetch(GEMINI_URL+'?key='+key,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      contents:[{parts:[{text:sys+'\n\n'+prompt}]}],
-      generationConfig:{maxOutputTokens:4000,temperature:0.7}
-    })
-  });
-  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'HTTP '+r.status);}
-  const d=await r.json();
-  const txt=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-  return txt;
+  const sys='Anda adalah ahli kurikulum Nasional Indonesia dan instructional designer profesional. Hasilkan konten RPM yang komprehensif dalam bahasa Indonesia baku (EYD). Istilah asing ditulis miring. KRITIS: Jawab HANYA dengan JSON valid murni. Tanpa markdown, tanpa komentar, tanpa teks apapun di luar kurung kurawal JSON.';
+  const res=await tryModels(sys+'\n\n'+prompt,4000);
+  if(!res.ok){
+    if(res.error==='QUOTA_ALL')throw new Error('Quota semua model gratis habis. Tunggu 24 jam atau gunakan API key dari akun Google lain.');
+    throw new Error(res.error);
+  }
+  return res.text;
 }
 
 function parseJ(raw){

@@ -20,13 +20,10 @@
   .ci input[type=checkbox]{accent-color:var(--primary);width:14px;height:14px;flex-shrink:0}
   .btn-p{background:var(--primary);color:#fff;border:none;padding:12px 28px;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:.2s}
   .btn-p:hover{background:#0f2540;transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.3)}
-  .btn-p:disabled{opacity:.5;cursor:not-allowed;transform:none}
   .btn-s{background:#fff;color:var(--primary);border:2px solid var(--primary);padding:9px 18px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:.2s}
   .btn-s:hover{background:var(--primary);color:#fff}
   .btn-a{background:var(--accent);color:#fff;border:none;padding:9px 18px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:.2s}
   .btn-a:hover{background:#c8881a}
-  .btn-g{background:#4285f4;color:#fff;border:none;padding:10px 18px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:.2s;text-decoration:none}
-  .btn-g:hover{background:#2a6dd9}
   .err{color:#dc2626;font-size:11px;margin-top:3px;display:none}
   .err.show{display:block}
   .fe .fi{border-color:#dc2626}
@@ -35,13 +32,12 @@
   .grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
   .ov{display:none;position:fixed;inset:0;background:rgba(10,20,40,.78);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px}
   .ov.show{display:flex}
-  .sp{width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+  .sp{width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .9s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   .ps{display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:7px;font-size:12px;color:rgba(255,255,255,.35);transition:.3s}
   .ps.active{color:#fff;font-weight:600}
   .ps.done{color:#4ade80}
   .pd{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
-  /* RPM Doc */
   #rout{display:none}
   .rh{text-align:center;border-bottom:3px double var(--primary);padding-bottom:14px;margin-bottom:18px}
   .rh h1{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--primary)}
@@ -56,9 +52,8 @@
   .rfs{text-align:center;min-width:190px}
   .rfs .rn{font-weight:700;margin-top:38px;border-top:1.5px solid #555;padding-top:5px;font-size:12px}
   #stickbar{position:sticky;top:0;z-index:100;background:var(--primary);padding:12px 20px}
-  .step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:11px;font-weight:700;flex-shrink:0}
   @media print{
-    #stickbar,#apibox,.no-print{display:none!important}
+    #stickbar,.no-print{display:none!important}
     #rout{display:block!important}
     #fwrap{display:none!important}
     body{background:#fff}
@@ -67,19 +62,18 @@
 </head>
 <body>
 
-<!-- Loading -->
 <div class="ov" id="ov">
   <div class="sp"></div>
   <div style="text-align:center">
-    <div style="color:#fff;font-weight:700;font-size:15px" id="ltxt">Memproses...</div>
-    <div style="color:rgba(255,255,255,.6);font-size:12px;margin-top:4px">Mohon tunggu, AI sedang menyusun RPM Anda</div>
+    <div style="color:#fff;font-weight:700;font-size:15px" id="ltxt">Menyusun RPM...</div>
+    <div style="color:rgba(255,255,255,.6);font-size:12px;margin-top:4px">Mohon tunggu sebentar</div>
   </div>
   <div style="margin-top:12px;display:flex;flex-direction:column;gap:3px">
-    <div class="ps" id="s1"><div class="pd"></div>Menganalisis Capaian Pembelajaran</div>
-    <div class="ps" id="s2"><div class="pd"></div>Merancang Kegiatan Pembelajaran</div>
-    <div class="ps" id="s3"><div class="pd"></div>Menyusun Instrumen Asesmen</div>
-    <div class="ps" id="s4"><div class="pd"></div>Menghasilkan LKPD &amp; Lampiran</div>
-    <div class="ps" id="s5"><div class="pd"></div>Memfinalisasi Dokumen RPM</div>
+    <div class="ps" id="s1"><div class="pd"></div>Menganalisis data pembelajaran</div>
+    <div class="ps" id="s2"><div class="pd"></div>Merancang kegiatan pembelajaran</div>
+    <div class="ps" id="s3"><div class="pd"></div>Menyusun instrumen asesmen</div>
+    <div class="ps" id="s4"><div class="pd"></div>Membuat LKPD &amp; lampiran</div>
+    <div class="ps" id="s5"><div class="pd"></div>Memfinalisasi dokumen</div>
   </div>
 </div>
 
@@ -97,263 +91,138 @@
 
 <!-- Form -->
 <div style="max-width:1080px;margin:0 auto;padding:22px 18px" id="fwrap">
+<form id="rform" novalidate>
 
-  <!-- API Key Box -->
-  <div id="apibox" style="background:#fff;border:2px solid #4285f4;border-radius:12px;padding:20px;margin-bottom:16px">
-    <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px">
-      <div style="background:#4285f4;color:#fff;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🤖</div>
-      <div>
-        <div style="font-weight:800;font-size:15px;color:#1a3a5c">Konfigurasi AI — Google Gemini (GRATIS)</div>
-        <div style="font-size:11px;color:#555;margin-top:2px">Gunakan Google AI Studio untuk mendapatkan API key <strong>100% gratis</strong>, tanpa kartu kredit. Ikuti langkah di bawah ini.</div>
-      </div>
+  <div class="card">
+    <div class="sh">A. Identitas Dokumen</div>
+    <div class="grid2">
+      <div><label class="fl">Nama Penyusun / Guru <span style="color:#dc2626">*</span></label><input type="text" id="f-guru" class="fi" placeholder="cth. Intan Widora, M.Pd., Gr."><div class="err" id="e-guru">Wajib diisi</div></div>
+      <div><label class="fl">NIP Guru</label><input type="text" id="f-nip-guru" class="fi" placeholder="cth. 198501012010011001"></div>
+      <div><label class="fl">Nama Sekolah <span style="color:#dc2626">*</span></label><input type="text" id="f-sekolah" class="fi" placeholder="cth. UPT SD Negeri Pringsewu"><div class="err" id="e-sekolah">Wajib diisi</div></div>
+      <div><label class="fl">Nama Kepala Sekolah</label><input type="text" id="f-kepsek" class="fi" placeholder="cth. Dr. Aqmar Ibnu, M.Ed."></div>
+      <div><label class="fl">NIP Kepala Sekolah</label><input type="text" id="f-nip-kepsek" class="fi" placeholder="cth. 197503152003122002"></div>
+      <div><label class="fl">Tahun Pelajaran <span style="color:#dc2626">*</span></label><input type="text" id="f-tahun" class="fi" value="2025/2026"><div class="err" id="e-tahun">Wajib diisi</div></div>
     </div>
-
-    <!-- Steps -->
-    <div style="background:#f0f7ff;border-radius:10px;padding:14px;margin-bottom:14px">
-      <div style="font-weight:700;font-size:12px;color:#1a3a5c;margin-bottom:10px">📋 Cara Mendapatkan API Key Gratis:</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px">
-          <span class="step-badge">1</span>
-          <span>Kunjungi <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#4285f4;font-weight:700;text-decoration:underline">aistudio.google.com/apikey</a> (login dengan akun Google)</span>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px">
-          <span class="step-badge">2</span>
-          <span>Klik tombol <strong>"Create API key"</strong> → pilih project atau buat baru</span>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px">
-          <span class="step-badge">3</span>
-          <span>Salin API key yang muncul (diawali dengan <code style="background:#e8edf2;padding:1px 5px;border-radius:3px;font-size:11px">AIza...</code>)</span>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px">
-          <span class="step-badge">4</span>
-          <span>Tempelkan API key di kolom di bawah ini, lalu klik <strong>"Uji Koneksi"</strong></span>
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <a href="https://aistudio.google.com/apikey" target="_blank" class="btn-g" style="font-size:12px;padding:8px 14px">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-          Buka Google AI Studio
-        </a>
-      </div>
-    </div>
-
-    <!-- API Key Input -->
-    <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end">
-      <div>
-        <label class="fl" style="color:#1a3a5c">API Key Google Gemini <span style="color:#dc2626">*</span></label>
-        <div style="position:relative">
-          <input type="password" id="f-apikey" class="fi" placeholder="AIzaSy..." style="padding-right:42px;border-color:#4285f4">
-          <button type="button" onclick="toggleVis()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#888;font-size:15px" id="eye-btn">👁</button>
-        </div>
-        <div style="font-size:10px;color:#888;margin-top:4px">API key disimpan di browser Anda saja, tidak dikirim ke server manapun selain Google</div>
-      </div>
-      <button type="button" class="btn-g" onclick="testKey()" id="btn-test" style="white-space:nowrap;height:38px;font-size:12px">
-        ✓ Uji Koneksi
-      </button>
-    </div>
-    <div id="api-status" style="margin-top:8px;font-size:12px;display:none;padding:8px 12px;border-radius:7px"></div>
   </div>
 
-  <form id="rform" novalidate>
+  <div class="card">
+    <div class="sh">B. Informasi Pembelajaran</div>
+    <div class="grid2">
+      <div><label class="fl">Mata Pelajaran <span style="color:#dc2626">*</span></label><input type="text" id="f-mapel" class="fi" placeholder="cth. Matematika, IPA, Bahasa Indonesia"><div class="err" id="e-mapel">Wajib diisi</div></div>
+      <div><label class="fl">Fase <span style="color:#dc2626">*</span></label>
+        <select id="f-fase" class="fi">
+          <option value="">— Pilih Fase —</option>
+          <option>Fase Fondasi (PAUD/TK)</option>
+          <option>Fase A (Kelas 1–2 SD)</option>
+          <option>Fase B (Kelas 3–4 SD)</option>
+          <option>Fase C (Kelas 5–6 SD)</option>
+          <option>Fase D (Kelas 7–9 SMP)</option>
+          <option>Fase E (Kelas 10 SMA/SMK)</option>
+          <option>Fase F (Kelas 11–12 SMA/SMK)</option>
+        </select><div class="err" id="e-fase">Wajib dipilih</div></div>
+      <div><label class="fl">Kelas <span style="color:#dc2626">*</span></label><input type="text" id="f-kelas" class="fi" placeholder="cth. IV, VII, X"><div class="err" id="e-kelas">Wajib diisi</div></div>
+      <div><label class="fl">Semester <span style="color:#dc2626">*</span></label>
+        <select id="f-sem" class="fi"><option value="">— Pilih —</option><option value="1">Semester 1 (Ganjil)</option><option value="2">Semester 2 (Genap)</option></select><div class="err" id="e-sem">Wajib dipilih</div></div>
+      <div><label class="fl">Alokasi Waktu <span style="color:#dc2626">*</span></label><input type="text" id="f-waktu" class="fi" placeholder="cth. 3 × 35 menit (2 pertemuan)"><div class="err" id="e-waktu">Wajib diisi</div></div>
+      <div><label class="fl">Target Peserta Didik</label>
+        <select id="f-target" class="fi">
+          <option value="Reguler">Reguler</option>
+          <option value="Kesulitan Belajar">Dengan Kesulitan Belajar</option>
+          <option value="Pencapaian Tinggi">Dengan Pencapaian Tinggi</option>
+          <option value="Campuran">Campuran (Diferensiasi Penuh)</option>
+        </select></div>
+    </div>
+  </div>
 
-    <!-- A -->
-    <div class="card">
-      <div class="sh">A. Identitas Dokumen</div>
-      <div class="grid2">
-        <div>
-          <label class="fl">Nama Penyusun / Guru <span style="color:#dc2626">*</span></label>
-          <input type="text" id="f-guru" class="fi" placeholder="cth. Drs. Budi Santoso, M.Pd.">
-          <div class="err" id="e-guru">Nama guru wajib diisi</div>
-        </div>
-        <div>
-          <label class="fl">NIP Guru</label>
-          <input type="text" id="f-nip-guru" class="fi" placeholder="cth. 198501012010011001">
-        </div>
-        <div>
-          <label class="fl">Nama Sekolah <span style="color:#dc2626">*</span></label>
-          <input type="text" id="f-sekolah" class="fi" placeholder="cth. UPT SD Negeri Pringsewu">
-          <div class="err" id="e-sekolah">Nama sekolah wajib diisi</div>
-        </div>
-        <div>
-          <label class="fl">Nama Kepala Sekolah</label>
-          <input type="text" id="f-kepsek" class="fi" placeholder="cth. Dr. Aqmar Ibnu, M.Ed.">
-        </div>
-        <div>
-          <label class="fl">NIP Kepala Sekolah</label>
-          <input type="text" id="f-nip-kepsek" class="fi" placeholder="cth. 197503152003122002">
-        </div>
-        <div>
-          <label class="fl">Tahun Pelajaran <span style="color:#dc2626">*</span></label>
-          <input type="text" id="f-tahun" class="fi" placeholder="cth. 2025/2026" value="2025/2026">
-          <div class="err" id="e-tahun">Tahun pelajaran wajib diisi</div>
+  <div class="card">
+    <div class="sh">C. Capaian &amp; Tujuan Pembelajaran</div>
+    <div style="display:grid;gap:14px">
+      <div><label class="fl">Capaian Pembelajaran (CP) <span style="color:#dc2626">*</span></label><textarea id="f-cp" class="fi" rows="4" placeholder="Tuliskan Capaian Pembelajaran sesuai dokumen CP Kemendikbud..."></textarea><div class="err" id="e-cp">Wajib diisi</div></div>
+      <div><label class="fl">Tujuan Pembelajaran <span style="color:#dc2626">*</span></label><textarea id="f-tujuan" class="fi" rows="4" placeholder="Tuliskan tujuan pembelajaran yang spesifik dan terukur..."></textarea><div class="err" id="e-tujuan">Wajib diisi</div></div>
+      <div><label class="fl">Topik / Materi Pokok <span style="color:#dc2626">*</span></label><input type="text" id="f-topik" class="fi" placeholder="cth. Bilangan Pecahan, Ekosistem, Teks Persuasif"><div class="err" id="e-topik">Wajib diisi</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh">D. Dimensi Profil Lulusan</div>
+    <div class="grid3" id="profil-container">
+      <label class="ci"><input type="checkbox" value="Keimanan dan Ketakwaan terhadap Tuhan Yang Maha Esa"><span>Keimanan &amp; Ketakwaan</span></label>
+      <label class="ci"><input type="checkbox" value="Kewargaan"><span>Kewargaan</span></label>
+      <label class="ci"><input type="checkbox" value="Penalaran Kritis"><span>Penalaran Kritis</span></label>
+      <label class="ci"><input type="checkbox" value="Kreativitas"><span>Kreativitas</span></label>
+      <label class="ci"><input type="checkbox" value="Kolaborasi"><span>Kolaborasi</span></label>
+      <label class="ci"><input type="checkbox" value="Kemandirian"><span>Kemandirian</span></label>
+      <label class="ci"><input type="checkbox" value="Kesehatan"><span>Kesehatan</span></label>
+      <label class="ci"><input type="checkbox" value="Komunikasi"><span>Komunikasi</span></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh">E. Model &amp; Metode Pembelajaran</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <div><label class="fl">Model Pembelajaran <span style="color:#dc2626">*</span></label>
+        <select id="f-model" class="fi">
+          <option value="">— Pilih Model —</option>
+          <option>Project-Based Learning (PjBL)</option>
+          <option>Problem-Based Learning (PBL)</option>
+          <option>Inquiry Learning</option>
+          <option>Pembelajaran Kooperatif</option>
+          <option>Blended Learning</option>
+          <option>Flipped Learning</option>
+          <option>Contextual Teaching &amp; Learning (CTL)</option>
+          <option>Game-Based Learning (GBL)</option>
+          <option>Model 5E (Engage, Explore, Explain, Elaborate, Evaluate)</option>
+          <option>Discovery Learning</option>
+        </select><div class="err" id="e-model">Wajib dipilih</div></div>
+      <div><label class="fl">Metode Pembelajaran</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px" id="metode-container">
+          <label class="ci"><input type="checkbox" value="Ceramah Interaktif"><span>Ceramah Interaktif</span></label>
+          <label class="ci"><input type="checkbox" value="Diskusi Kelompok"><span>Diskusi Kelompok</span></label>
+          <label class="ci"><input type="checkbox" value="Tanya Jawab"><span>Tanya Jawab</span></label>
+          <label class="ci"><input type="checkbox" value="Eksperimen"><span>Eksperimen</span></label>
+          <label class="ci"><input type="checkbox" value="Demonstrasi"><span>Demonstrasi</span></label>
+          <label class="ci"><input type="checkbox" value="Discovery"><span>Discovery</span></label>
+          <label class="ci"><input type="checkbox" value="Studi Kasus"><span>Studi Kasus</span></label>
+          <label class="ci"><input type="checkbox" value="Role Play"><span>Role Play</span></label>
+          <label class="ci"><input type="checkbox" value="Mind Mapping"><span>Mind Mapping</span></label>
+          <label class="ci"><input type="checkbox" value="Presentasi"><span>Presentasi</span></label>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- B -->
-    <div class="card">
-      <div class="sh">B. Informasi Pembelajaran</div>
-      <div class="grid2">
-        <div>
-          <label class="fl">Mata Pelajaran <span style="color:#dc2626">*</span></label>
-          <input type="text" id="f-mapel" class="fi" placeholder="cth. Matematika, IPA, Bahasa Indonesia">
-          <div class="err" id="e-mapel">Mata pelajaran wajib diisi</div>
-        </div>
-        <div>
-          <label class="fl">Fase <span style="color:#dc2626">*</span></label>
-          <select id="f-fase" class="fi">
-            <option value="">— Pilih Fase —</option>
-            <option>Fase Fondasi (PAUD/TK)</option>
-            <option>Fase A (Kelas 1–2 SD)</option>
-            <option>Fase B (Kelas 3–4 SD)</option>
-            <option>Fase C (Kelas 5–6 SD)</option>
-            <option>Fase D (Kelas 7–9 SMP)</option>
-            <option>Fase E (Kelas 10 SMA/SMK)</option>
-            <option>Fase F (Kelas 11–12 SMA/SMK)</option>
-          </select>
-          <div class="err" id="e-fase">Fase wajib dipilih</div>
-        </div>
-        <div>
-          <label class="fl">Kelas <span style="color:#dc2626">*</span></label>
-          <input type="text" id="f-kelas" class="fi" placeholder="cth. IV, VII, X, XII">
-          <div class="err" id="e-kelas">Kelas wajib diisi</div>
-        </div>
-        <div>
-          <label class="fl">Semester <span style="color:#dc2626">*</span></label>
-          <select id="f-sem" class="fi">
-            <option value="">— Pilih —</option>
-            <option value="1">Semester 1 (Ganjil)</option>
-            <option value="2">Semester 2 (Genap)</option>
-          </select>
-          <div class="err" id="e-sem">Semester wajib dipilih</div>
-        </div>
-        <div>
-          <label class="fl">Alokasi Waktu <span style="color:#dc2626">*</span></label>
-          <input type="text" id="f-waktu" class="fi" placeholder="cth. 3 × 40 menit (2 pertemuan)">
-          <div class="err" id="e-waktu">Alokasi waktu wajib diisi</div>
-        </div>
-        <div>
-          <label class="fl">Target Peserta Didik</label>
-          <select id="f-target" class="fi">
-            <option value="Reguler">Reguler</option>
-            <option value="Kesulitan Belajar">Peserta Didik dengan Kesulitan Belajar</option>
-            <option value="Pencapaian Tinggi">Peserta Didik dengan Pencapaian Tinggi</option>
-            <option value="Campuran">Campuran (Diferensiasi Penuh)</option>
-          </select>
-        </div>
-      </div>
+  <div class="card">
+    <div class="sh">F. Sarana &amp; Prasarana</div>
+    <div class="grid4" id="sarana-container">
+      <label class="ci"><input type="checkbox" value="LCD Proyektor"><span>LCD Proyektor</span></label>
+      <label class="ci"><input type="checkbox" value="Laptop/Komputer"><span>Laptop/Komputer</span></label>
+      <label class="ci"><input type="checkbox" value="Chromebook"><span>Chromebook</span></label>
+      <label class="ci"><input type="checkbox" value="Gawai/Smartphone"><span>Gawai/Smartphone</span></label>
+      <label class="ci"><input type="checkbox" value="Koneksi Internet"><span>Koneksi Internet</span></label>
+      <label class="ci"><input type="checkbox" value="Google Workspace"><span>Google Workspace</span></label>
+      <label class="ci"><input type="checkbox" value="LKPD Cetak"><span>LKPD Cetak</span></label>
+      <label class="ci"><input type="checkbox" value="Whiteboard/Papan Tulis"><span>Whiteboard</span></label>
+      <label class="ci"><input type="checkbox" value="Buku Teks"><span>Buku Teks</span></label>
+      <label class="ci"><input type="checkbox" value="Modul Digital"><span>Modul Digital</span></label>
+      <label class="ci"><input type="checkbox" value="Laboratorium"><span>Laboratorium</span></label>
+      <label class="ci" style="grid-column:1/-1;flex-wrap:wrap;align-items:flex-start;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="cb-lainnya" onchange="toggleLainnya(this)"><span>Lainnya</span></div>
+        <input type="text" id="inp-lainnya" class="fi" placeholder="Tuliskan sarana lainnya..." style="display:none;margin-top:6px;width:100%;font-size:12px" onclick="event.stopPropagation()">
+      </label>
     </div>
+  </div>
 
-    <!-- C -->
-    <div class="card">
-      <div class="sh">C. Capaian &amp; Tujuan Pembelajaran</div>
-      <div style="display:grid;gap:14px">
-        <div>
-          <label class="fl">Capaian Pembelajaran (CP) <span style="color:#dc2626">*</span></label>
-          <textarea id="f-cp" class="fi" rows="4" placeholder="Tuliskan Capaian Pembelajaran sesuai dokumen CP Kemendikbud..."></textarea>
-          <div class="err" id="e-cp">Capaian Pembelajaran wajib diisi</div>
-        </div>
-        <div>
-          <label class="fl">Tujuan Pembelajaran <span style="color:#dc2626">*</span></label>
-          <textarea id="f-tujuan" class="fi" rows="4" placeholder="Tuliskan tujuan pembelajaran yang spesifik, terukur, dan relevan dengan CP..."></textarea>
-          <div class="err" id="e-tujuan">Tujuan Pembelajaran wajib diisi</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- D -->
-    <div class="card">
-      <div class="sh">D. Dimensi Profil Lulusan</div>
-      <div class="grid3" id="profil-container">
-        <label class="ci"><input type="checkbox" value="Keimanan dan Ketakwaan terhadap Tuhan Yang Maha Esa"><span>Keimanan &amp; Ketakwaan</span></label>
-        <label class="ci"><input type="checkbox" value="Kewargaan"><span>Kewargaan</span></label>
-        <label class="ci"><input type="checkbox" value="Penalaran Kritis"><span>Penalaran Kritis</span></label>
-        <label class="ci"><input type="checkbox" value="Kreativitas"><span>Kreativitas</span></label>
-        <label class="ci"><input type="checkbox" value="Kolaborasi"><span>Kolaborasi</span></label>
-        <label class="ci"><input type="checkbox" value="Kemandirian"><span>Kemandirian</span></label>
-        <label class="ci"><input type="checkbox" value="Kesehatan"><span>Kesehatan</span></label>
-        <label class="ci"><input type="checkbox" value="Komunikasi"><span>Komunikasi</span></label>
-      </div>
-    </div>
-
-    <!-- E -->
-    <div class="card">
-      <div class="sh">E. Model &amp; Metode Pembelajaran</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div>
-          <label class="fl">Model Pembelajaran <span style="color:#dc2626">*</span></label>
-          <select id="f-model" class="fi">
-            <option value="">— Pilih Model —</option>
-            <option>Project-Based Learning (PjBL)</option>
-            <option>Problem-Based Learning (PBL)</option>
-            <option>Inquiry Learning</option>
-            <option>Pembelajaran Kooperatif</option>
-            <option>Blended Learning</option>
-            <option>Flipped Learning</option>
-            <option>Contextual Teaching &amp; Learning (CTL)</option>
-            <option>Game-Based Learning (GBL)</option>
-            <option>Model 5E (Engage, Explore, Explain, Elaborate, Evaluate)</option>
-            <option>Discovery Learning</option>
-          </select>
-          <div class="err" id="e-model">Model pembelajaran wajib dipilih</div>
-        </div>
-        <div>
-          <label class="fl">Metode Pembelajaran</label>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px" id="metode-container">
-            <label class="ci"><input type="checkbox" value="Ceramah Interaktif"><span>Ceramah Interaktif</span></label>
-            <label class="ci"><input type="checkbox" value="Diskusi Kelompok"><span>Diskusi Kelompok</span></label>
-            <label class="ci"><input type="checkbox" value="Tanya Jawab"><span>Tanya Jawab</span></label>
-            <label class="ci"><input type="checkbox" value="Eksperimen"><span>Eksperimen</span></label>
-            <label class="ci"><input type="checkbox" value="Demonstrasi"><span>Demonstrasi</span></label>
-            <label class="ci"><input type="checkbox" value="Discovery"><span>Discovery</span></label>
-            <label class="ci"><input type="checkbox" value="Studi Kasus"><span>Studi Kasus</span></label>
-            <label class="ci"><input type="checkbox" value="Role Play"><span>Role Play</span></label>
-            <label class="ci"><input type="checkbox" value="Mind Mapping"><span>Mind Mapping</span></label>
-            <label class="ci"><input type="checkbox" value="Presentasi"><span>Presentasi</span></label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- F -->
-    <div class="card">
-      <div class="sh">F. Sarana &amp; Prasarana</div>
-      <div class="grid4" id="sarana-container">
-        <label class="ci"><input type="checkbox" value="LCD Proyektor"><span>LCD Proyektor</span></label>
-        <label class="ci"><input type="checkbox" value="Laptop/Komputer"><span>Laptop/Komputer</span></label>
-        <label class="ci"><input type="checkbox" value="Chromebook"><span>Chromebook</span></label>
-        <label class="ci"><input type="checkbox" value="Gawai/Smartphone"><span>Gawai/Smartphone</span></label>
-        <label class="ci"><input type="checkbox" value="Koneksi Internet"><span>Koneksi Internet</span></label>
-        <label class="ci"><input type="checkbox" value="Google Workspace"><span>Google Workspace</span></label>
-        <label class="ci"><input type="checkbox" value="LKPD Cetak"><span>LKPD Cetak</span></label>
-        <label class="ci"><input type="checkbox" value="Whiteboard/Papan Tulis"><span>Whiteboard</span></label>
-        <label class="ci"><input type="checkbox" value="Buku Teks"><span>Buku Teks</span></label>
-        <label class="ci"><input type="checkbox" value="Modul Digital"><span>Modul Digital</span></label>
-        <label class="ci"><input type="checkbox" value="Laboratorium"><span>Laboratorium</span></label>
-        <label class="ci" style="grid-column:1/-1;flex-wrap:wrap;align-items:flex-start;gap:6px">
-          <div style="display:flex;align-items:center;gap:8px">
-            <input type="checkbox" id="cb-lainnya" value="Lainnya" onchange="toggleLainnya(this)">
-            <span>Lainnya</span>
-          </div>
-          <input type="text" id="inp-lainnya" class="fi" placeholder="Tuliskan sarana lainnya..." style="display:none;margin-top:6px;width:100%;font-size:12px" onclick="event.stopPropagation()">
-        </label>
-      </div>
-    </div>
-
-    <!-- Submit -->
-    <div style="text-align:center;padding:18px 0 8px">
-      <button type="submit" class="btn-p" style="font-size:15px;padding:14px 36px">
-        ✦ Buat RPM Sekarang
-      </button>
-      <div style="color:#6b7280;font-size:11px;margin-top:8px">AI Google Gemini akan menghasilkan dokumen RPM lengkap dan profesional</div>
-    </div>
-  </form>
+  <div style="text-align:center;padding:18px 0 8px">
+    <button type="submit" class="btn-p" style="font-size:15px;padding:14px 40px">✦ Buat RPM Sekarang</button>
+    <div style="color:#6b7280;font-size:11px;margin-top:8px">Dokumen RPM akan dibuat secara otomatis, gratis, tanpa internet</div>
+  </div>
+</form>
 </div>
 
 <!-- Output -->
 <div id="rout">
   <div id="stickbar" class="no-print">
-    <div style="max-width:850px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+    <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
       <div style="color:#fff;font-weight:700;font-size:14px">✅ RPM Berhasil Dibuat!</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-a" onclick="copyGDocs()">📋 Salin &amp; Buka Google Docs</button>
@@ -364,217 +233,304 @@
     </div>
   </div>
   <div style="padding:24px 18px">
-    <div style="max-width:850px;margin:0 auto;background:#fff;padding:36px;border:1px solid #ccc;font-size:12px;line-height:1.7" id="rdoc"></div>
+    <div style="max-width:860px;margin:0 auto;background:#fff;padding:36px;border:1px solid #ccc;font-size:12px;line-height:1.7" id="rdoc"></div>
   </div>
 </div>
 
 <script>
-// ── Gemini API — auto-fallback antar model gratis ───────────
-const GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/models/";
-// Dicoba urutan dari paling ringan ke berat; skip jika quota habis
-const GEMINI_MODELS = [
-  "gemini-1.5-flash-8b",
-  "gemini-1.5-flash",
-  "gemini-1.5-flash-latest",
-  "gemini-1.5-pro",
-];
-let activeModel = GEMINI_MODELS[0];
+// ─────────────────────────────────────────────
+// GENERATOR RPM — OFFLINE (tanpa API/internet)
+// ─────────────────────────────────────────────
 
-function getKey(){ return document.getElementById('f-apikey').value.trim(); }
-
-function toggleVis(){
-  const inp=document.getElementById('f-apikey'), btn=document.getElementById('eye-btn');
-  if(inp.type==='password'){inp.type='text';btn.textContent='\u{1F648}';}
-  else{inp.type='password';btn.textContent='\u{1F441}';}
-}
-
-function isQuota(msg){
-  return msg&&(msg.includes('quota')||msg.includes('Quota')||msg.includes('RESOURCE_EXHAUSTED')||msg.includes('limit: 0')||msg.includes('exceeded'));
-}
-
-async function tryModels(bodyText, maxTok){
-  const key=getKey();
-  for(const model of GEMINI_MODELS){
-    const url=GEMINI_BASE+model+':generateContent?key='+key;
-    try{
-      const r=await fetch(url,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({contents:[{parts:[{text:bodyText}]}],generationConfig:{maxOutputTokens:maxTok||4000,temperature:0.7}})
-      });
-      const d=await r.json();
-      if(r.ok&&d.candidates){
-        activeModel=model;
-        return{ok:true,model,text:d.candidates[0]?.content?.parts?.[0]?.text||''};
-      }
-      const em=d.error?.message||'';
-      if(isQuota(em)){console.warn('Quota habis: '+model+', coba berikutnya...');continue;}
-      return{ok:false,error:em||('HTTP '+r.status)};
-    }catch(e){console.warn('Error '+model+': '+e.message);continue;}
-  }
-  return{ok:false,error:'QUOTA_ALL'};
-}
-
-async function testKey(){
-  const key=getKey();
-  const st=document.getElementById('api-status'),btn=document.getElementById('btn-test');
-  st.style.display='block';
-  if(!key){st.style.background='#fef2f2';st.style.color='#dc2626';st.innerHTML='&#9888; Masukkan API key terlebih dahulu';return;}
-  btn.disabled=true;btn.textContent='Menguji...';
-  st.style.background='#f0f9ff';st.style.color='#0369a1';st.innerHTML='&#9203; Mencari model Gemini yang tersedia...';
-  const res=await tryModels('Halo, balas satu kata: OK',5);
-  if(res.ok){
-    st.style.background='#f0fdf4';st.style.color='#166534';
-    st.innerHTML='&#9989; Koneksi berhasil pakai model <strong>'+res.model+'</strong>. API key valid, silakan isi form dan generate RPM!';
-  } else if(res.error==='QUOTA_ALL'){
-    st.style.background='#fffbeb';st.style.color='#92400e';
-    st.innerHTML='<strong>&#9888;&#65039; Quota harian gratis habis</strong> — semua model gratis sedang di-reset Google.<br><br>'
-      +'<strong>Solusi:</strong><br>'
-      +'&bull; Tunggu 24 jam, quota reset otomatis setiap hari<br>'
-      +'&bull; Buat API key baru di <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#1a3a5c;font-weight:700">aistudio.google.com/apikey</a> dengan akun Google lain<br>'
-      +'&bull; Aktifkan billing Google Cloud (ada free credit $300 untuk akun baru)';
-  } else {
-    st.style.background='#fef2f2';st.style.color='#dc2626';
-    st.innerHTML='&#10060; Gagal: '+res.error+'<br><small>Pastikan API key diawali <code>AIza</code> dan tidak ada spasi</small>';
-  }
-  btn.disabled=false;btn.textContent='&#10003; Uji Koneksi';
-}
-
-async function callAI(prompt){
-  const sys='Anda adalah ahli kurikulum Nasional Indonesia dan instructional designer profesional. Hasilkan konten RPM yang komprehensif dalam bahasa Indonesia baku (EYD). Istilah asing ditulis miring. KRITIS: Jawab HANYA dengan JSON valid murni. Tanpa markdown, tanpa komentar, tanpa teks apapun di luar kurung kurawal JSON.';
-  const res=await tryModels(sys+'\n\n'+prompt,4000);
-  if(!res.ok){
-    if(res.error==='QUOTA_ALL')throw new Error('Quota semua model gratis habis. Tunggu 24 jam atau gunakan API key dari akun Google lain.');
-    throw new Error(res.error);
-  }
-  return res.text;
-}
-
-function parseJ(raw){
-  // Strip any markdown fences
-  let s=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
-  // Find outermost { }
-  const a=s.indexOf('{'), b=s.lastIndexOf('}');
-  if(a<0||b<0)return{};
-  try{return JSON.parse(s.slice(a,b+1));}catch(e){
-    // Try to recover by removing trailing commas
-    try{return JSON.parse(s.slice(a,b+1).replace(/,\s*([}\]])/g,'$1'));}
-    catch{return{};}
-  }
-}
-
-// ── Helpers ─────────────────────────────────────────────────
-function toggleLainnya(cb){
-  const inp=document.getElementById('inp-lainnya');
-  inp.style.display=cb.checked?'block':'none';
-  if(!cb.checked)inp.value='';
-}
-function getChecked(cid){
-  return[...document.querySelectorAll('#'+cid+' input[type=checkbox]:checked')].map(c=>c.value);
-}
+function v(id){return document.getElementById(id);}
+function val(id){return v(id).value.trim();}
+function getChecked(cid){return[...document.querySelectorAll('#'+cid+' input[type=checkbox]:checked')].map(c=>c.value);}
 function getSarana(){
-  const r=[...document.querySelectorAll('#sarana-container input[type=checkbox]:checked')]
-    .map(c=>c.value).filter(v=>v!=='Lainnya');
-  if(document.getElementById('cb-lainnya').checked){
-    const v=document.getElementById('inp-lainnya').value.trim();
-    if(v)r.push(v);
-  }
+  const r=[...document.querySelectorAll('#sarana-container input[type=checkbox]:checked')].map(c=>c.value).filter(x=>x!=='Lainnya');
+  if(v('cb-lainnya').checked){const t=val('inp-lainnya');if(t)r.push(t);}
   return r;
 }
-function setStep(n){
-  for(let i=1;i<=5;i++){
-    document.getElementById('s'+i).className='ps'+(i<n?' done':i===n?' active':'');
-  }
-}
-function safe(v,fb='—'){return(v&&String(v).trim()&&v!=='...')?v:fb;}
-function safeA(v){return Array.isArray(v)?v:[];}
+function toggleLainnya(cb){v('inp-lainnya').style.display=cb.checked?'block':'none';if(!cb.checked)v('inp-lainnya').value='';}
+function setStep(n){for(let i=1;i<=5;i++)v('s'+i).className='ps'+(i<n?' done':i===n?' active':'');}
+function trI(l,val){return`<tr><td style="width:35%;padding:6px 9px;font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;vertical-align:top">${l}</td><td style="padding:6px 9px;border:1px solid #ccc;font-size:11px;vertical-align:top">${val||'—'}</td></tr>`;}
 
-// ── Validate ─────────────────────────────────────────────────
+// Validasi form
 function validate(){
-  const st=document.getElementById('api-status');
-  if(!getKey()){
-    st.style.display='block';st.style.background='#fef2f2';st.style.color='#dc2626';
-    st.innerHTML='⚠ Masukkan API key Google Gemini terlebih dahulu';
-    document.getElementById('f-apikey').scrollIntoView({behavior:'smooth',block:'center'});
-    return false;
-  }
-  const fs=[
-    ['f-guru','e-guru'],['f-sekolah','e-sekolah'],['f-tahun','e-tahun'],
-    ['f-mapel','e-mapel'],['f-fase','e-fase'],['f-kelas','e-kelas'],
-    ['f-sem','e-sem'],['f-waktu','e-waktu'],['f-cp','e-cp'],
-    ['f-tujuan','e-tujuan'],['f-model','e-model']
-  ];
+  const fields=[['f-guru','e-guru'],['f-sekolah','e-sekolah'],['f-tahun','e-tahun'],
+    ['f-mapel','e-mapel'],['f-fase','e-fase'],['f-kelas','e-kelas'],['f-sem','e-sem'],
+    ['f-waktu','e-waktu'],['f-cp','e-cp'],['f-tujuan','e-tujuan'],['f-topik','e-topik'],['f-model','e-model']];
   let ok=true;
-  fs.forEach(([id,eid])=>{
-    const el=document.getElementById(id),er=document.getElementById(eid);
+  fields.forEach(([id,eid])=>{
+    const el=v(id),er=v(eid);
     if(!el.value.trim()){er.classList.add('show');el.closest('div').classList.add('fe');ok=false;}
     else{er.classList.remove('show');el.closest('div').classList.remove('fe');}
   });
   return ok;
 }
 
-// ── Generate ─────────────────────────────────────────────────
-async function generate(data){
+// ── BANK KONTEN GENERATOR ─────────────────────────────────────
 
-  setStep(1);
-  document.getElementById('ltxt').textContent='Menganalisis Capaian Pembelajaran...';
-  const r1=await callAI(`Data RPM: Mata Pelajaran=${data.mapel}, Fase=${data.fase}, Kelas=${data.kelas}, CP="${data.cp}", Target PD=${data.targetPD}
+// Hasilkan identifikasi peserta didik berdasarkan jenjang & mata pelajaran
+function genIdentifikasi(mapel, fase, kelas, cp, targetPD, topik){
+  const jenjang = fase.includes('PAUD')||fase.includes('Fondasi') ? 'PAUD' :
+    fase.includes('SD')||fase.includes('Fase A')||fase.includes('Fase B')||fase.includes('Fase C') ? 'SD' :
+    fase.includes('SMP')||fase.includes('Fase D') ? 'SMP' : 'SMA';
 
-Hasilkan JSON identifikasi pembelajaran (tidak ada teks lain, hanya JSON):
-{"pengetahuanAwal":"narasi 2-3 kalimat tentang pengetahuan prasyarat siswa","minatSiswa":"narasi 2-3 kalimat tentang minat dan karakteristik","latarBelakang":"narasi 2 kalimat latar belakang sosial budaya","kebutuhanBelajar":"narasi 2 kalimat kebutuhan belajar utama","faktual":"sebutkan 3-4 fakta kunci materi dipisah titik koma","konseptual":"sebutkan 3-4 konsep inti dipisah titik koma","prosedural":"sebutkan 3-4 prosedur/langkah dipisah titik koma","metakognitif":"2-3 strategi metakognitif","lintasDisiplin":"kaitan dengan 2-3 bidang ilmu lain","topikPembelajaran":"judul topik pembelajaran yang menarik dan kontekstual"}`);
-  const id=parseJ(r1);
-
-  setStep(2);
-  document.getElementById('ltxt').textContent='Merancang Kegiatan Pembelajaran...';
-  const r2=await callAI(`RPM: Mapel=${data.mapel}, Kelas=${data.kelas}, Fase=${data.fase}, Model=${data.model}, Metode=${data.metode.join(',')||'Ceramah'}, CP="${data.cp}", Tujuan="${data.tujuan}", Alokasi=${data.alokasiWaktu}
-
-Hasilkan JSON langkah pembelajaran (tidak ada teks lain, hanya JSON):
-{"pendahuluan":{"durasi":"15 menit","narasi":"narasi kontekstual 2-3 kalimat","langkah":["Guru membuka pembelajaran dengan salam hangat dan memimpin doa bersama","Guru melakukan presensi dan menanyakan kabar serta kesiapan belajar peserta didik","Peserta didik bersama-sama melakukan murojaah surah pendek pilihan","Peserta didik menyanyikan lagu nasional Indonesia Raya bersama-sama","Guru dan peserta didik menyepakati aturan dan kesepakatan kelas","Guru menerapkan aktivitas KSE: check-in emosi dengan teknik napas dalam atau kartu perasaan","Guru memimpin ice breaking yang menyenangkan dan relevan dengan materi","Guru menyampaikan apersepsi mengaitkan materi baru dengan pengalaman peserta didik","Guru menyampaikan tujuan pembelajaran dan manfaatnya dalam kehidupan","Guru mengajukan pertanyaan pemantik HOTS yang terbuka untuk memancing rasa ingin tahu"]},"inti":{"durasi":"90 menit","memahami":{"narasi":"narasi 2 kalimat","langkah":["aktivitas konkret 1","aktivitas konkret 2","aktivitas konkret 3","aktivitas konkret 4"]},"mengaplikasi":{"narasi":"narasi 2 kalimat","langkah":["aktivitas konkret 1","aktivitas konkret 2","aktivitas konkret 3","aktivitas konkret 4"]},"merefleksi":{"narasi":"narasi 2 kalimat","langkah":["aktivitas refleksi 1","aktivitas refleksi 2","aktivitas refleksi 3"]}},"penutup":{"durasi":"15 menit","narasi":"narasi penutup 2 kalimat","langkah":["Peserta didik menuliskan refleksi mandiri tentang hal yang dipelajari","Guru memberikan umpan balik positif dan apresiasi atas partisipasi peserta didik","Guru dan peserta didik bersama-sama menarik kesimpulan pembelajaran","Guru memberikan tugas rumah yang relevan","Guru menyampaikan topik pertemuan selanjutnya","Pembelajaran ditutup dengan doa penutup bersama"]},"petaPengalaman":{"mengalami":"deskripsi pengalaman belajar langsung","bertanya":"deskripsi aktivitas bertanya kritis","mengeksplorasi":"deskripsi eksplorasi mandiri","merefleksi":"deskripsi refleksi mendalam","mengaplikasikan":"deskripsi penerapan nyata"}}`);
-  const keg=parseJ(r2);
-
-  setStep(3);
-  document.getElementById('ltxt').textContent='Menyusun Instrumen Asesmen...';
-  const r3=await callAI(`RPM: Mapel=${data.mapel}, Kelas=${data.kelas}, CP="${data.cp}", Tujuan="${data.tujuan}"
-
-Hasilkan JSON asesmen LENGKAP 10 soal PG dan 5 soal esai (tidak ada teks lain, hanya JSON):
-{"diagnostik":[{"no":1,"soal":"pertanyaan diagnostik relevan 1","jawaban":"jawaban yang diharapkan"},{"no":2,"soal":"pertanyaan diagnostik relevan 2","jawaban":"jawaban yang diharapkan"},{"no":3,"soal":"pertanyaan diagnostik relevan 3","jawaban":"jawaban yang diharapkan"}],"formatif":{"observasi":"deskripsi teknik observasi 2 kalimat dan indikator yang diamati","rubrik":[{"aspek":"Pemahaman Konsep","sangat_baik":"deskripsi capaian sangat baik","baik":"deskripsi capaian baik","cukup":"deskripsi capaian cukup","perlu_bimbingan":"deskripsi perlu bimbingan"},{"aspek":"Keterampilan Proses","sangat_baik":"deskripsi","baik":"deskripsi","cukup":"deskripsi","perlu_bimbingan":"deskripsi"},{"aspek":"Sikap Kolaborasi","sangat_baik":"deskripsi","baik":"deskripsi","cukup":"deskripsi","perlu_bimbingan":"deskripsi"}]},"sumatif":{"pilganSoal":[{"no":1,"soal":"soal PG 1 sesuai materi","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"A"},{"no":2,"soal":"soal PG 2","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"B"},{"no":3,"soal":"soal PG 3","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"C"},{"no":4,"soal":"soal PG 4","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"D"},{"no":5,"soal":"soal PG 5","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"A"},{"no":6,"soal":"soal PG 6","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"B"},{"no":7,"soal":"soal PG 7","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"C"},{"no":8,"soal":"soal PG 8","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"A"},{"no":9,"soal":"soal PG 9","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"D"},{"no":10,"soal":"soal PG 10","opsi":{"A":"opsi A","B":"opsi B","C":"opsi C","D":"opsi D"},"kunci":"B"}],"esaiSoal":[{"no":1,"soal":"soal esai 1 HOTS","pedoman":"pedoman penskoran esai 1","bobot":20},{"no":2,"soal":"soal esai 2","pedoman":"pedoman penskoran","bobot":20},{"no":3,"soal":"soal esai 3","pedoman":"pedoman penskoran","bobot":20},{"no":4,"soal":"soal esai 4","pedoman":"pedoman penskoran","bobot":20},{"no":5,"soal":"soal esai 5","pedoman":"pedoman penskoran","bobot":20}]},"remedial":"deskripsi program remedial 2-3 kalimat","pengayaan":"deskripsi program pengayaan 2-3 kalimat"}`);
-  const as=parseJ(r3);
-
-  setStep(4);
-  document.getElementById('ltxt').textContent='Menyusun LKPD & Lampiran...';
-  const r4=await callAI(`RPM: Mapel=${data.mapel}, Kelas=${data.kelas}, CP="${data.cp}", Topik="${id.topikPembelajaran||data.mapel}"
-
-Hasilkan JSON lampiran (tidak ada teks lain, hanya JSON):
-{"materiRingkas":"materi inti naratif 4-5 paragraf komprehensif mencakup semua konsep penting","lkpd":{"judul":"judul LKPD yang menarik dan relevan","tujuan":["tujuan 1","tujuan 2","tujuan 3"],"petunjuk":["petunjuk pengerjaan 1","petunjuk pengerjaan 2","petunjuk pengerjaan 3"],"soalPG":[{"no":1,"soal":"soal PG LKPD 1","opsi":{"A":"a","B":"b","C":"c","D":"d"}},{"no":2,"soal":"soal PG LKPD 2","opsi":{"A":"a","B":"b","C":"c","D":"d"}},{"no":3,"soal":"soal PG LKPD 3","opsi":{"A":"a","B":"b","C":"c","D":"d"}},{"no":4,"soal":"soal PG LKPD 4","opsi":{"A":"a","B":"b","C":"c","D":"d"}},{"no":5,"soal":"soal PG LKPD 5","opsi":{"A":"a","B":"b","C":"c","D":"d"}}],"soalUraian":[{"no":1,"soal":"soal uraian 1"},{"no":2,"soal":"soal uraian 2"},{"no":3,"soal":"soal uraian 3"}]},"soalHOTS":[{"no":1,"soal":"soal HOTS level tinggi 1","levelBloom":"Analisis"},{"no":2,"soal":"soal HOTS 2","levelBloom":"Evaluasi"},{"no":3,"soal":"soal HOTS 3","levelBloom":"Kreasi"},{"no":4,"soal":"soal HOTS 4","levelBloom":"Analisis"},{"no":5,"soal":"soal HOTS 5","levelBloom":"Evaluasi"}],"daftarPustaka":["Kemendikbudristek. (2022). Capaian Pembelajaran Kurikulum Nasional. Jakarta: Kemendikbudristek.","referensi buku teks relevan 2","referensi jurnal atau artikel relevan 3","sumber digital/online relevan 4","referensi lain yang relevan 5"],"diferensiasi":{"konten":"strategi diferensiasi konten: cara membedakan materi untuk berbagai tingkat kemampuan, 2 kalimat","proses":"strategi diferensiasi proses: cara membedakan aktivitas belajar, 2 kalimat","produk":"strategi diferensiasi produk: cara membedakan hasil/karya yang dihasilkan, 2 kalimat"}}`);
-  const lamp=parseJ(r4);
-
-  setStep(5);
-  document.getElementById('ltxt').textContent='Memfinalisasi Dokumen RPM...';
-  await new Promise(r=>setTimeout(r,400));
-  return {id,keg,as,lamp};
-}
-
-// ── Render ───────────────────────────────────────────────────
-function trI(label,val){
-  return`<tr><td style="width:35%;padding:6px 9px;font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;vertical-align:top">${label}</td><td style="padding:6px 9px;border:1px solid #ccc;font-size:11px;vertical-align:top">${val||'—'}</td></tr>`;
-}
-
-function renderDoc(data,gen){
-  const {id,keg,as,lamp}=gen;
-  const tgl=new Date().toLocaleDateString('id-ID',{year:'numeric',month:'long',day:'numeric'});
-  const profilDesc={
-    'Keimanan dan Ketakwaan terhadap Tuhan Yang Maha Esa':'Peserta didik senantiasa beriman dan bertakwa kepada Tuhan YME, menjalankan ibadah, dan berakhlak mulia dalam kehidupan sehari-hari.',
-    'Kewargaan':'Peserta didik memiliki rasa cinta tanah air, bangga terhadap identitas nasional, dan berkontribusi aktif bagi masyarakat.',
-    'Penalaran Kritis':'Peserta didik mampu berpikir kritis, logis, analitis, dan sistematis dalam menghadapi berbagai permasalahan.',
-    'Kreativitas':'Peserta didik mampu menghasilkan karya orisinal, berpikir divergen, dan menemukan solusi inovatif.',
-    'Kolaborasi':'Peserta didik mampu bekerja sama secara efektif dalam tim yang beragam, saling menghargai, dan berkontribusi optimal.',
-    'Kemandirian':'Peserta didik memiliki inisiatif belajar mandiri, mampu mengelola diri, dan bertanggung jawab atas proses belajarnya.',
-    'Kesehatan':'Peserta didik menyadari pentingnya kesehatan fisik dan mental serta mempraktikkan gaya hidup sehat dan aktif.',
-    'Komunikasi':'Peserta didik mampu mengomunikasikan ide, gagasan, dan perasaan secara efektif dalam berbagai konteks dan media.',
+  const praMap = {
+    SD:  `Peserta didik di kelas ${kelas} pada umumnya telah memiliki kemampuan membaca, menulis, dan berhitung dasar. Mereka memahami konsep-konsep sederhana yang dipelajari di kelas sebelumnya dan mulai mampu menghubungkan pengalaman sehari-hari dengan materi pelajaran. Pemahaman awal tentang ${topik} perlu digali melalui pertanyaan diagnostik yang kontekstual.`,
+    SMP: `Peserta didik kelas ${kelas} telah memiliki pemahaman dasar tentang konsep-konsep yang berkaitan dengan ${topik} dari jenjang sebelumnya. Mereka mampu berpikir abstrak sederhana dan mulai mengembangkan kemampuan analisis. Pengetahuan prasyarat yang dibutuhkan mencakup pemahaman terhadap ${mapel} di tingkat dasar.`,
+    SMA: `Peserta didik kelas ${kelas} telah memiliki fondasi pengetahuan yang cukup tentang ${mapel} dari jenjang SMP. Mereka mampu berpikir kritis, analitis, dan mulai mampu mengevaluasi informasi secara mandiri. Pemahaman awal tentang ${topik} diasumsikan sudah terbentuk dan siap dikembangkan lebih dalam.`,
+    PAUD:`Peserta didik pada fase fondasi belajar melalui bermain dan eksplorasi langsung. Mereka memiliki rasa ingin tahu yang besar dan belajar secara holistik melalui pengalaman nyata. Pemahaman awal dibangun melalui aktivitas yang menyenangkan dan kontekstual.`,
   };
-  const ket=['Religius','','','Nasionalisme','Disiplin','KSE','Motivasi','Apersepsi','Literasi','HOTS'];
+  const minatMap = {
+    SD:  `Peserta didik di usia ini menyukai aktivitas yang melibatkan permainan, cerita, gambar, dan hal-hal yang berhubungan dengan lingkungan sekitar mereka. Mereka lebih mudah memahami materi jika dikaitkan dengan pengalaman nyata dan disajikan secara visual serta interaktif.`,
+    SMP: `Peserta didik remaja memiliki minat yang beragam, termasuk teknologi, seni, olahraga, dan interaksi sosial. Mereka lebih termotivasi ketika pembelajaran dikaitkan dengan dunia nyata, isu-isu terkini, dan diberikan kebebasan untuk berpendapat dan berkreasi.`,
+    SMA: `Peserta didik mulai memiliki minat yang lebih spesifik sesuai bakat dan rencana masa depan. Mereka tertarik pada pembelajaran yang relevan dengan kehidupan nyata, karier, dan isu-isu kontemporer. Diskusi mendalam dan proyek nyata sangat memotivasi mereka.`,
+    PAUD:`Peserta didik sangat menyukai bermain, bernyanyi, bergerak, dan bercerita. Mereka belajar optimal melalui eksplorasi sensoris dan interaksi dengan teman sebaya.`,
+  };
+  const latarMap = {
+    SD:  `Peserta didik berasal dari latar belakang keluarga yang beragam, baik dari sisi ekonomi, budaya, maupun tingkat pendidikan orang tua. Keberagaman ini menjadi kekayaan dalam proses pembelajaran yang perlu dikelola dengan pendekatan inklusif dan berdiferensiasi.`,
+    SMP: `Peserta didik berada pada masa perkembangan sosial yang aktif, dipengaruhi oleh teman sebaya, keluarga, dan media sosial. Latar belakang sosial-budaya yang beragam perlu dijadikan sumber belajar yang memperkaya perspektif dalam diskusi kelas.`,
+    SMA: `Peserta didik berada pada fase pencarian identitas diri yang dipengaruhi berbagai faktor sosial, budaya, dan teknologi. Perbedaan latar belakang menjadi peluang untuk mengembangkan kemampuan berkolaborasi lintas perspektif.`,
+    PAUD:`Peserta didik berasal dari keluarga dengan beragam latar belakang. Keterlibatan orang tua sangat berpengaruh pada kesiapan belajar anak.`,
+  };
+  const kebutuhanMap = {
+    SD:  `Peserta didik membutuhkan pendekatan pembelajaran yang konkret, visual, dan menyenangkan. Mereka perlu mendapatkan bimbingan bertahap dengan contoh yang dekat dengan kehidupan sehari-hari, serta memerlukan penguatan positif yang konsisten untuk membangun kepercayaan diri.`,
+    SMP: `Peserta didik membutuhkan pembelajaran yang menantang namun tetap terstruktur, dengan kesempatan untuk berkolaborasi dan mengekspresikan pendapat. Mereka perlu difasilitasi untuk mengembangkan kemampuan berpikir kritis dan pemecahan masalah secara bertahap.`,
+    SMA: `Peserta didik membutuhkan pembelajaran yang mendorong berpikir tingkat tinggi, otonomi, dan relevansi dengan kehidupan nyata. Mereka perlu diarahkan untuk mengintegrasikan pengetahuan dari berbagai disiplin ilmu dan menghasilkan karya yang bermakna.`,
+    PAUD:`Peserta didik membutuhkan lingkungan belajar yang aman, menyenangkan, dan penuh stimulasi. Kegiatan harus bersifat bermain sambil belajar dengan durasi pendek dan bervariasi.`,
+  };
 
-  return`
+  return {
+    pengetahuanAwal: praMap[jenjang],
+    minatSiswa: minatMap[jenjang],
+    latarBelakang: latarMap[jenjang],
+    kebutuhanBelajar: kebutuhanMap[jenjang],
+    faktual: `Definisi dan konsep dasar ${topik}; fakta-fakta penting yang berkaitan dengan ${mapel}; data dan informasi aktual yang relevan dengan materi; contoh-contoh nyata dalam kehidupan sehari-hari`,
+    konseptual: `Prinsip-prinsip utama dalam ${topik}; hubungan antarkonsep dalam ${mapel}; teori dan generalisasi yang mendasari materi; pemahaman mendalam tentang mengapa dan bagaimana`,
+    prosedural: `Langkah-langkah sistematis dalam memahami ${topik}; cara menggunakan alat dan strategi belajar yang tepat; prosedur pemecahan masalah; teknik dan metode praktis yang dapat diterapkan`,
+    metakognitif: `Strategi pemantauan pemahaman diri sendiri; kemampuan mengevaluasi proses belajar; refleksi terhadap strategi yang paling efektif untuk memahami ${topik}; perencanaan belajar mandiri`,
+    lintasDisiplin: `${mapel} berkaitan erat dengan berbagai bidang ilmu lainnya. Materi ${topik} dapat dihubungkan dengan ilmu sosial dan budaya, teknologi dan rekayasa, serta seni dan kreativitas, sehingga pembelajaran menjadi lebih holistik dan bermakna bagi peserta didik.`,
+  };
+}
+
+// Hasilkan langkah pembelajaran berdasarkan model
+function genLangkah(mapel, model, metode, topik, tujuan, waktu, fase){
+  const modelSteps = {
+    'Project-Based Learning (PjBL)': {
+      memahami: ['Guru menyajikan proyek nyata yang berkaitan dengan topik '+topik+' dan relevan dengan kehidupan peserta didik','Peserta didik mengamati dan menganalisis contoh proyek yang telah berhasil dikerjakan sebelumnya','Guru memfasilitasi diskusi untuk menggali pengetahuan awal peserta didik tentang '+topik,'Peserta didik membentuk kelompok dan mendiskusikan pertanyaan esensial yang menjadi dasar proyek'],
+      mengaplikasi: ['Setiap kelompok merancang rencana proyek secara tertulis dengan panduan dari guru','Peserta didik melaksanakan proyek secara kolaboratif, mencari informasi, dan mengolah data','Guru memantau progres setiap kelompok dan memberikan umpan balik konstruktif secara berkala','Peserta didik menyempurnakan produk proyek berdasarkan masukan guru dan teman sebaya'],
+      merefleksi: ['Setiap kelompok mempresentasikan hasil proyek di depan kelas','Peserta didik saling memberikan apresiasi dan masukan yang membangun','Guru memandu diskusi tentang pelajaran yang dipetik dari proses pengerjaan proyek','Peserta didik menuliskan refleksi pribadi tentang kontribusi dan pembelajaran dari proyek'],
+    },
+    'Problem-Based Learning (PBL)': {
+      memahami: ['Guru menyajikan masalah nyata yang kontekstual berkaitan dengan '+topik+' untuk memancing rasa ingin tahu','Peserta didik mengidentifikasi dan merumuskan masalah secara bersama-sama dalam kelompok','Guru membimbing peserta didik untuk menganalisis informasi yang diketahui dan yang perlu dicari','Peserta didik membuat hipotesis awal sebagai landasan penyelidikan lebih lanjut'],
+      mengaplikasi: ['Peserta didik melakukan penyelidikan secara mandiri dan kolaboratif untuk mencari solusi','Setiap kelompok mengumpulkan data, fakta, dan argumen yang mendukung solusi yang diusulkan','Guru memfasilitasi diskusi antar kelompok untuk memperkaya perspektif pemecahan masalah','Peserta didik menyusun solusi terbaik berdasarkan bukti dan argumen yang telah dikumpulkan'],
+      merefleksi: ['Setiap kelompok mempresentasikan solusi dan proses pemecahan masalah yang ditempuh','Kelas mendiskusikan berbagai solusi dan mengevaluasi kelebihan serta kekurangan masing-masing','Guru menegaskan konsep kunci dan mengaitkan dengan Capaian Pembelajaran','Peserta didik menuliskan refleksi tentang proses berpikir dan pemecahan masalah yang dilakukan'],
+    },
+    'Discovery Learning': {
+      memahami: ['Guru memberikan stimulus berupa fenomena atau pertanyaan terbuka yang berkaitan dengan '+topik,'Peserta didik melakukan observasi dan pengumpulan data secara mandiri di bawah bimbingan guru','Guru mendorong peserta didik untuk mengidentifikasi pola dan hubungan dari data yang ditemukan','Peserta didik merumuskan dugaan sementara berdasarkan pengamatan yang telah dilakukan'],
+      mengaplikasi: ['Peserta didik membuktikan dugaan sementara melalui percobaan atau pengkajian lebih mendalam','Guru membimbing proses pengolahan data dan penarikan kesimpulan secara logis dan sistematis','Peserta didik mengaplikasikan temuan dalam menyelesaikan soal atau permasalahan baru','Guru memberikan penguatan dan koreksi terhadap konsep yang ditemukan peserta didik'],
+      merefleksi: ['Peserta didik mempresentasikan hasil penemuan kepada teman-teman sekelas','Guru memandu diskusi untuk menghubungkan temuan dengan konsep yang lebih luas','Peserta didik mendokumentasikan proses penemuan dan kesimpulan dalam catatan belajar','Bersama-sama menyimpulkan konsep inti yang telah ditemukan melalui proses discovery'],
+    },
+    'Inquiry Learning': {
+      memahami: ['Guru mengajukan pertanyaan pemantik yang mendorong rasa ingin tahu tentang '+topik,'Peserta didik merumuskan pertanyaan penelitian sendiri yang ingin mereka selidiki','Guru membimbing peserta didik dalam merencanakan strategi penyelidikan yang sistematis','Peserta didik mengidentifikasi sumber informasi yang relevan dan terpercaya'],
+      mengaplikasi: ['Peserta didik melakukan penyelidikan secara aktif melalui berbagai sumber belajar','Setiap kelompok mengolah dan menganalisis informasi yang berhasil dikumpulkan','Guru memfasilitasi diskusi kritis tentang temuan dan makna di balik data','Peserta didik menyusun laporan atau produk berdasarkan hasil penyelidikan'],
+      merefleksi: ['Peserta didik menyajikan hasil penyelidikan dalam berbagai format yang kreatif','Kelas memberikan tanggapan konstruktif terhadap setiap penyajian hasil penyelidikan','Guru memandu refleksi tentang proses inkuiri yang telah dilalui peserta didik','Peserta didik mengevaluasi kualitas penyelidikan dan mengidentifikasi area untuk perbaikan'],
+    },
+    'Pembelajaran Kooperatif': {
+      memahami: ['Guru menjelaskan materi '+topik+' secara interaktif dengan melibatkan partisipasi peserta didik','Peserta didik membentuk kelompok heterogen dan menerima tugas belajar yang jelas','Setiap anggota kelompok memelajari bagian materi yang ditugaskan dengan penuh tanggung jawab','Guru memantau dan mendukung proses belajar mandiri setiap kelompok'],
+      mengaplikasi: ['Peserta didik saling mengajarkan materi yang telah dipelajari kepada anggota kelompok lain','Kelompok mengerjakan tugas atau proyek bersama dengan menggabungkan pemahaman masing-masing','Guru mengamati dinamika kerja kelompok dan memberikan bimbingan jika diperlukan','Setiap anggota kelompok memastikan semua teman memahami materi sebelum melanjutkan'],
+      merefleksi: ['Setiap kelompok mempresentasikan hasil kerja sama kepada seluruh kelas','Kelas berdiskusi dan saling melengkapi pemahaman antar kelompok','Guru memberikan penguatan terhadap konsep yang telah dipelajari secara kooperatif','Peserta didik merefleksikan proses kerja sama dan kontribusi masing-masing anggota'],
+    },
+  };
+
+  const defaultSteps = {
+    memahami: ['Guru menyampaikan materi '+topik+' secara interaktif menggunakan media pembelajaran yang menarik','Peserta didik menyimak penjelasan guru dan mencatat poin-poin penting secara aktif','Guru memberikan contoh konkret yang dekat dengan kehidupan sehari-hari peserta didik','Peserta didik mengajukan pertanyaan dan mendiskusikan hal-hal yang belum dipahami'],
+    mengaplikasi: ['Peserta didik mengerjakan latihan soal secara individu untuk mengukur pemahaman awal','Peserta didik berdiskusi dalam kelompok kecil untuk memecahkan permasalahan yang diberikan','Guru berkeliling memantau dan memberikan bimbingan kepada kelompok yang membutuhkan','Setiap kelompok menyajikan hasil diskusi dan mendapat umpan balik dari teman dan guru'],
+    merefleksi: ['Peserta didik menuliskan tiga hal yang telah dipelajari, dua hal yang masih membingungkan, dan satu hal yang ingin dipelajari lebih lanjut','Guru dan peserta didik bersama-sama merangkum poin-poin kunci dari pembelajaran hari ini','Peserta didik mengisi lembar refleksi diri tentang pencapaian tujuan pembelajaran'],
+  };
+
+  const steps = modelSteps[model] || defaultSteps;
+  return {
+    pendahuluan: {
+      durasi: '15 menit',
+      narasi: `Pembelajaran ${mapel} dengan topik ${topik} diawali dengan suasana yang hangat dan penuh semangat. Guru menciptakan lingkungan belajar yang aman dan kondusif sehingga peserta didik merasa nyaman untuk bertanya, berpendapat, dan belajar dari kesalahan. Apersepsi dilakukan untuk mengaktifkan skema pengetahuan awal peserta didik dan membangun jembatan antara pengalaman lama dengan materi baru.`,
+      langkah: [
+        'Guru membuka pembelajaran dengan salam hangat dan mengajak peserta didik berdoa bersama dipimpin oleh ketua kelas',
+        'Guru melakukan presensi dan menanyakan kabar serta kesiapan belajar peserta didik hari ini',
+        'Peserta didik bersama-sama melakukan murojaah surah-surah pendek pilihan selama kurang lebih 3 menit',
+        'Peserta didik menyanyikan lagu nasional bersama-sama dengan penuh semangat dan rasa cinta tanah air',
+        'Guru dan peserta didik menyepakati bersama aturan dan kesepakatan kelas yang akan diterapkan selama pembelajaran',
+        'Guru menerapkan aktivitas Kompetensi Sosial-Emosional (KSE): peserta didik melakukan teknik STOP (Stop, Take a breath, Observe, Proceed) untuk mengatur emosi dan fokus belajar',
+        'Guru memimpin ice breaking yang menyenangkan dan relevan untuk membangun energi dan keakraban kelas',
+        'Guru menyampaikan apersepsi dengan mengajukan pertanyaan yang mengaitkan pengalaman nyata peserta didik dengan materi '+topik+' yang akan dipelajari',
+        'Guru menyampaikan tujuan pembelajaran hari ini secara jelas beserta manfaatnya dalam kehidupan sehari-hari',
+        'Guru mengajukan pertanyaan pemantik HOTS: "Mengapa '+topik+' penting untuk kita pelajari? Bagaimana penerapannya dalam kehidupan nyata?"',
+      ],
+    },
+    inti: {
+      durasi: '90 menit',
+      memahami: { narasi: `Pada fase memahami, peserta didik diajak untuk membangun pemahaman konseptual yang mendalam tentang ${topik} melalui pendekatan ${model}. Guru berperan sebagai fasilitator yang mendorong rasa ingin tahu dan kemampuan berpikir kritis peserta didik.`, langkah: steps.memahami },
+      mengaplikasi: { narasi: `Fase mengaplikasi dirancang untuk memberikan kesempatan peserta didik menggunakan pemahaman yang telah dibangun dalam situasi yang lebih kompleks. Melalui ${metode.join(', ')||'berbagai metode pembelajaran'}, peserta didik berlatih menerapkan konsep secara aktif dan kolaboratif.`, langkah: steps.mengaplikasi },
+      merefleksi: { narasi: `Fase refleksi mengajak peserta didik untuk mengkonsolidasi pemahaman, mengevaluasi proses belajar, dan mengidentifikasi area yang masih perlu dikuasai. Refleksi yang mendalam merupakan kunci pembelajaran yang bertahan lama.`, langkah: steps.merefleksi },
+    },
+    penutup: {
+      durasi: '15 menit',
+      narasi: `Kegiatan penutup dirancang untuk memastikan seluruh tujuan pembelajaran tercapai dan peserta didik siap untuk melanjutkan proses belajar di luar kelas. Guru memberikan apresiasi atas partisipasi aktif setiap peserta didik selama pembelajaran berlangsung.`,
+      langkah: [
+        'Peserta didik menuliskan refleksi mandiri: hal yang paling bermakna dipelajari hari ini dan hal yang ingin dipelajari lebih lanjut',
+        'Guru memberikan umpan balik positif dan mengapresiasi keaktifan serta kerja keras peserta didik',
+        'Guru dan peserta didik bersama-sama menyimpulkan materi pokok pembelajaran hari ini',
+        'Guru memberikan penugasan terstruktur yang relevan dengan materi '+topik+' untuk dikerjakan di rumah',
+        'Guru menginformasikan topik dan rencana pembelajaran pada pertemuan berikutnya',
+        'Pembelajaran ditutup dengan doa penutup bersama yang dipimpin oleh salah satu peserta didik',
+      ],
+    },
+    petaPengalaman: {
+      mengalami: `Peserta didik mengalami proses belajar secara langsung melalui ${model} yang mendorong keterlibatan aktif. Mereka terlibat dalam aktivitas hands-on yang bermakna dan relevan dengan topik ${topik}.`,
+      bertanya: `Peserta didik dirangsang untuk mengajukan pertanyaan-pertanyaan kritis tentang ${topik}. Guru menciptakan ruang aman di mana setiap pertanyaan dihargai dan dijadikan titik tolak eksplorasi lebih lanjut.`,
+      mengeksplorasi: `Peserta didik melakukan eksplorasi mandiri dan kolaboratif untuk menemukan jawaban atas pertanyaan mereka. Mereka menggunakan berbagai sumber belajar dan strategi yang dikuasai.`,
+      merefleksi: `Peserta didik secara berkala merefleksikan proses dan hasil belajar mereka, mengidentifikasi kemajuan yang dicapai dan tantangan yang masih dihadapi dalam memahami ${topik}.`,
+      mengaplikasikan: `Peserta didik menerapkan pemahaman tentang ${topik} dalam konteks nyata dan situasi baru, membuktikan bahwa pengetahuan yang diperoleh benar-benar bermakna dan dapat digunakan.`,
+    },
+  };
+}
+
+// Hasilkan soal berdasarkan topik (bank soal generik tapi relevan)
+function genAsesmen(mapel, topik, kelas, cp){
+  return {
+    diagnostik: [
+      {no:1, soal:`Apa yang kamu ketahui tentang ${topik}? Jelaskan dengan kata-katamu sendiri!`, jawaban:`Peserta didik dapat menjelaskan pengertian dasar ${topik} sesuai pemahaman mereka. Guru mencatat variasi jawaban untuk pemetaan kemampuan awal.`},
+      {no:2, soal:`Pernahkah kamu menemui atau menggunakan konsep ${topik} dalam kehidupan sehari-hari? Berikan contohnya!`, jawaban:`Peserta didik dapat memberikan minimal satu contoh nyata penerapan ${topik} dalam kehidupan sehari-hari sesuai pengalaman mereka.`},
+      {no:3, soal:`Apa yang ingin kamu pelajari lebih lanjut tentang ${topik}? Tuliskan minimal dua pertanyaan yang ada di benakmu!`, jawaban:`Peserta didik dapat merumuskan pertanyaan yang relevan dengan ${topik}, mencerminkan rasa ingin tahu dan kesiapan belajar mereka.`},
+    ],
+    formatif: {
+      observasi: `Guru melakukan observasi selama proses pembelajaran menggunakan lembar pengamatan terstruktur. Aspek yang diamati meliputi keaktifan bertanya, kualitas diskusi, kemampuan kerja sama, dan ketepatan dalam mengerjakan tugas yang berkaitan dengan ${topik}.`,
+      rubrik: [
+        {aspek:'Pemahaman Konsep', sangat_baik:`Mampu menjelaskan seluruh konsep ${topik} dengan tepat, lengkap, dan menggunakan bahasa sendiri`, baik:`Mampu menjelaskan sebagian besar konsep ${topik} dengan cukup tepat`, cukup:`Mampu menjelaskan konsep dasar ${topik} dengan beberapa kekeliruan`, perlu_bimbingan:`Belum mampu menjelaskan konsep ${topik} secara mandiri, membutuhkan bimbingan intensif`},
+        {aspek:'Keterampilan Proses', sangat_baik:`Melakukan seluruh tahapan proses pembelajaran secara mandiri, sistematis, dan menghasilkan produk berkualitas tinggi`, baik:`Melakukan sebagian besar tahapan dengan baik dan menghasilkan produk yang memadai`, cukup:`Melakukan sebagian tahapan dengan bantuan teman atau guru`, perlu_bimbingan:`Membutuhkan bimbingan intensif dalam setiap tahapan proses pembelajaran`},
+        {aspek:'Sikap &amp; Kolaborasi', sangat_baik:`Selalu aktif berkontribusi, menghargai pendapat teman, dan menjadi penggerak diskusi kelompok yang produktif`, baik:`Aktif berpartisipasi dan menghargai pendapat teman dalam diskusi kelompok`, cukup:`Berpartisipasi jika diminta dan cukup menghargai pendapat teman`, perlu_bimbingan:`Kurang aktif berpartisipasi dan perlu didorong untuk terlibat dalam diskusi`},
+      ],
+    },
+    sumatif: {
+      pilganSoal: genPilgan(topik, mapel),
+      esaiSoal: genEsai(topik, mapel, kelas),
+    },
+    remedial: `Program remedial diberikan kepada peserta didik yang belum mencapai Kriteria Ketercapaian Tujuan Pembelajaran (KKTP). Pelaksanaan remedial dilakukan melalui pembelajaran ulang dengan pendekatan yang berbeda, bimbingan individual, dan penggunaan media pembelajaran yang lebih sederhana dan kontekstual. Peserta didik diberikan soal remedial dengan tingkat kesulitan yang disesuaikan.`,
+    pengayaan: `Program pengayaan diberikan kepada peserta didik yang telah melampaui KKTP. Mereka diberikan tantangan berupa proyek mandiri, penelitian sederhana, atau soal-soal HOTS yang lebih kompleks berkaitan dengan ${topik}. Peserta didik juga dapat menjadi tutor sebaya untuk membantu teman yang mengikuti remedial.`,
+  };
+}
+
+function genPilgan(topik, mapel){
+  // Bank soal generik yang bisa diaplikasikan untuk berbagai mata pelajaran
+  const soalTemplate = [
+    {soal:`Pernyataan yang paling tepat mendeskripsikan konsep utama dalam ${topik} adalah...`, opsi:{A:`${topik} merupakan konsep dasar yang menjelaskan hubungan antara teori dan praktik dalam ${mapel}`,B:`${topik} tidak berhubungan dengan kehidupan sehari-hari`,C:`${topik} hanya berlaku dalam kondisi tertentu yang sangat terbatas`,D:`${topik} merupakan konsep lanjutan yang tidak perlu dipahami di jenjang ini`},kunci:'A'},
+    {soal:`Tujuan utama mempelajari ${topik} dalam mata pelajaran ${mapel} adalah...`, opsi:{A:`Sekadar memenuhi kurikulum tanpa manfaat praktis`,B:`Mengembangkan kemampuan berpikir kritis dan memecahkan masalah nyata`,C:`Menghafal seluruh definisi dan rumus tanpa memahami maknanya`,D:`Mempersiapkan diri untuk ujian nasional semata`},kunci:'B'},
+    {soal:`Langkah pertama yang tepat dalam memahami konsep ${topik} adalah...`, opsi:{A:`Langsung mengerjakan soal-soal yang sulit`,B:`Mengabaikan pengetahuan awal dan memulai dari nol`,C:`Mengidentifikasi konsep prasyarat yang telah diketahui sebelumnya`,D:`Menghafal semua istilah teknis terlebih dahulu`},kunci:'C'},
+    {soal:`Contoh penerapan ${topik} yang paling relevan dalam kehidupan sehari-hari adalah...`, opsi:{A:`Dalam situasi yang sangat jarang terjadi dan tidak dapat diprediksi`,B:`Hanya dalam konteks akademis dan laboratorium saja`,C:`Tidak ada penerapan nyata dalam kehidupan sehari-hari`,D:`Dalam berbagai aktivitas sehari-hari yang sering kita lakukan`},kunci:'D'},
+    {soal:`Hubungan antara ${topik} dengan mata pelajaran ${mapel} secara keseluruhan adalah...`, opsi:{A:`${topik} merupakan bagian integral yang mendukung pemahaman ${mapel} secara menyeluruh`,B:`${topik} adalah topik yang berdiri sendiri tanpa kaitan dengan topik lain`,C:`${topik} tidak relevan dengan kurikulum ${mapel} yang berlaku`,D:`${topik} hanya penting untuk jenjang pendidikan yang lebih tinggi`},kunci:'A'},
+    {soal:`Strategi belajar yang paling efektif untuk memahami ${topik} adalah...`, opsi:{A:`Hanya membaca buku teks tanpa melakukan praktik atau diskusi`,B:`Mengandalkan hafalan tanpa memahami konsep yang mendasarinya`,C:`Belajar secara aktif: mengaitkan dengan pengalaman nyata, berdiskusi, dan mempraktikkan`,D:`Menunggu penjelasan guru tanpa berusaha memahami secara mandiri`},kunci:'C'},
+    {soal:`Kesalahan yang sering terjadi dalam memahami ${topik} adalah...`, opsi:{A:`Terlalu banyak berlatih dan mencari sumber belajar yang beragam`,B:`Berdiskusi dengan teman untuk memperdalam pemahaman`,C:`Mencari hubungan antara ${topik} dengan materi lain yang telah dipelajari`,D:`Menafsirkan konsep secara dangkal tanpa memahami prinsip yang mendasarinya`},kunci:'D'},
+    {soal:`Seorang peserta didik dapat dikatakan telah memahami ${topik} dengan baik apabila ia mampu...`, opsi:{A:`Menghafal seluruh isi buku teks tentang ${topik}`,B:`Menjelaskan, menerapkan, dan menganalisis ${topik} dalam berbagai konteks`,C:`Mengerjakan soal yang persis sama dengan contoh yang diajarkan guru`,D:`Menyalin catatan teman yang dianggap paling pintar di kelas`},kunci:'B'},
+    {soal:`Keterkaitan antara ${topik} dengan pengembangan karakter peserta didik terletak pada...`, opsi:{A:`Tidak ada keterkaitan antara materi pelajaran dengan pembentukan karakter`,B:`Hanya berkaitan dengan aspek kognitif tanpa menyentuh aspek afektif`,C:`Proses belajar yang mendorong ketekunan, kolaborasi, dan kejujuran ilmiah`,D:`Karakter dibentuk secara terpisah dari pembelajaran mata pelajaran`},kunci:'C'},
+    {soal:`Manfaat mempelajari ${topik} bagi kehidupan peserta didik di masa depan adalah...`, opsi:{A:`Tidak memberikan manfaat nyata di luar konteks sekolah`,B:`Hanya bermanfaat jika peserta didik memilih karier di bidang ${mapel}`,C:`Membekali kemampuan berpikir dan pemecahan masalah yang berlaku lintas bidang kehidupan`,D:`Bermanfaat hanya untuk melanjutkan ke jenjang pendidikan yang lebih tinggi`},kunci:'C'},
+  ];
+  return soalTemplate.map((s,i)=>({no:i+1,...s}));
+}
+
+function genEsai(topik, mapel, kelas){
+  return [
+    {no:1, soal:`Jelaskan dengan bahasamu sendiri apa yang dimaksud dengan ${topik} dan mengapa konsep ini penting dipelajari dalam ${mapel}!`, pedoman:`Skor 20: Penjelasan lengkap, tepat, menggunakan bahasa sendiri, disertai alasan yang logis. Skor 15: Penjelasan cukup lengkap dengan beberapa kekurangan. Skor 10: Penjelasan hanya sebagian. Skor 5: Penjelasan sangat terbatas. Skor 0: Tidak menjawab.`, bobot:20},
+    {no:2, soal:`Berikan minimal dua contoh nyata penerapan ${topik} dalam kehidupan sehari-hari! Jelaskan bagaimana konsep tersebut berperan dalam contoh yang kamu pilih.`, pedoman:`Skor 20: Dua atau lebih contoh relevan dengan penjelasan yang tepat dan rinci. Skor 15: Dua contoh dengan penjelasan yang cukup. Skor 10: Satu contoh relevan dengan penjelasan. Skor 5: Contoh kurang relevan atau tanpa penjelasan. Skor 0: Tidak menjawab.`, bobot:20},
+    {no:3, soal:`Analisis tantangan atau kesulitan yang mungkin dihadapi saat mempelajari ${topik}! Berikan strategi yang dapat dilakukan untuk mengatasinya.`, pedoman:`Skor 20: Identifikasi tantangan tepat dan strategi solusi yang konkret serta realistis. Skor 15: Identifikasi cukup tepat dengan strategi yang memadai. Skor 10: Identifikasi sebagian dengan strategi terbatas. Skor 5: Sangat terbatas. Skor 0: Tidak menjawab.`, bobot:20},
+    {no:4, soal:`Bagaimana kamu dapat menghubungkan pemahaman tentang ${topik} dengan mata pelajaran atau bidang ilmu lain? Jelaskan keterkaitan tersebut!`, pedoman:`Skor 20: Keterkaitan lintas disiplin yang tepat, logis, dan disertai penjelasan mendalam. Skor 15: Keterkaitan yang cukup relevan. Skor 10: Keterkaitan sederhana. Skor 5: Keterkaitan sangat terbatas. Skor 0: Tidak menjawab.`, bobot:20},
+    {no:5, soal:`Buatlah sebuah rencana singkat bagaimana kamu akan terus mengembangkan pemahamanmu tentang ${topik} di luar jam pelajaran sekolah!`, pedoman:`Skor 20: Rencana konkret, realistis, kreatif, dan menunjukkan kemandirian belajar yang tinggi. Skor 15: Rencana cukup konkret dan realistis. Skor 10: Rencana masih umum. Skor 5: Rencana sangat sederhana. Skor 0: Tidak menjawab.`, bobot:20},
+  ];
+}
+
+function genLampiran(mapel, topik, kelas, cp, model){
+  const materi = `${topik} merupakan salah satu materi penting dalam mata pelajaran ${mapel} yang memiliki relevansi tinggi dengan kehidupan sehari-hari peserta didik. Pemahaman yang mendalam tentang ${topik} akan membekali peserta didik dengan kompetensi yang dibutuhkan untuk menghadapi tantangan di abad ke-21.
+
+Secara konseptual, ${topik} mencakup serangkaian pengetahuan, keterampilan, dan nilai yang saling berkaitan. Peserta didik perlu memahami tidak hanya aspek faktual, tetapi juga prinsip-prinsip yang mendasari serta cara menerapkannya dalam berbagai konteks yang berbeda-beda.
+
+Dalam kurikulum nasional, materi ${topik} dikembangkan secara spiral, artinya konsep ini diperkenalkan secara sederhana pada jenjang yang lebih rendah dan diperdalam secara bertahap sesuai dengan tingkat perkembangan kognitif dan afektif peserta didik. Pendekatan ini memastikan setiap peserta didik dapat membangun pemahaman yang kuat dan berkelanjutan.
+
+Pembelajaran ${topik} dalam mata pelajaran ${mapel} dirancang untuk mengembangkan berbagai kompetensi secara terintegrasi, meliputi kemampuan berpikir kritis, kreativitas, kolaborasi, dan komunikasi. Model pembelajaran ${model} dipilih karena paling efektif untuk mencapai tujuan pembelajaran yang telah ditetapkan.
+
+Untuk mendukung keberhasilan pembelajaran, peserta didik didorong untuk aktif mencari informasi dari berbagai sumber yang terpercaya, mendiskusikan temuan dengan teman sebaya, dan mengaplikasikan pemahaman dalam situasi nyata. Guru berperan sebagai fasilitator yang mendampingi dan mendukung proses belajar setiap peserta didik.
+
+Asesmen dalam pembelajaran ${topik} mencakup asesmen diagnostik untuk mengidentifikasi kebutuhan awal, asesmen formatif untuk memantau perkembangan, dan asesmen sumatif untuk mengukur pencapaian akhir. Hasil asesmen digunakan sebagai dasar pengambilan keputusan pembelajaran selanjutnya.`;
+
+  const lkpd = {
+    judul: `LKPD: Eksplorasi ${topik}`,
+    tujuan: [
+      `Peserta didik dapat memahami konsep dasar ${topik} dengan tepat melalui berbagai aktivitas eksplorasi`,
+      `Peserta didik mampu menerapkan pemahaman tentang ${topik} dalam menyelesaikan permasalahan kontekstual`,
+      `Peserta didik dapat mengembangkan kemampuan berpikir kritis dan kolaboratif melalui diskusi kelompok`,
+    ],
+    petunjuk: [
+      `Bacalah setiap pertanyaan dengan cermat sebelum menjawab, pastikan kamu memahami apa yang ditanyakan`,
+      `Kerjakan secara mandiri terlebih dahulu, kemudian diskusikan dengan anggota kelompokmu`,
+      `Tuliskan jawaban dengan rapi, jelas, dan menggunakan bahasamu sendiri`,
+    ],
+    soalPG: [
+      {no:1, soal:`Konsep yang paling mendasar dalam ${topik} adalah...`, opsi:{A:`Pemahaman teori tanpa praktik`,B:`Keterkaitan antara konsep dan penerapan nyata`,C:`Hafalan definisi dan istilah`,D:`Pengerjaan soal secara mekanis`}},
+      {no:2, soal:`Ketika mempelajari ${topik}, sikap yang paling tepat ditunjukkan seorang pelajar adalah...`, opsi:{A:`Pasif dan menunggu penjelasan guru`,B:`Aktif bertanya, berdiskusi, dan mencoba hal baru`,C:`Hanya membaca tanpa melakukan aktivitas apapun`,D:`Mengutamakan nilai dibanding pemahaman`}},
+      {no:3, soal:`Penerapan ${topik} dalam kehidupan sehari-hari menunjukkan bahwa ilmu ini bersifat...`, opsi:{A:`Teoritis dan jauh dari kehidupan nyata`,B:`Hanya relevan untuk kalangan akademis`,C:`Praktis dan relevan untuk semua kalangan`,D:`Tidak dapat diterapkan oleh pelajar`}},
+      {no:4, soal:`Cara terbaik untuk mengingat dan memahami ${topik} dalam jangka panjang adalah...`, opsi:{A:`Menghafal sesaat sebelum ujian`,B:`Memahami konsep dan sering berlatih menerapkannya`,C:`Menyalin catatan teman`,D:`Belajar hanya saat ada PR`}},
+      {no:5, soal:`Manfaat berdiskusi kelompok dalam mempelajari ${topik} adalah...`, opsi:{A:`Tidak ada manfaatnya karena belajar lebih baik sendiri`,B:`Memperlambat proses belajar individu`,C:`Memperkaya perspektif dan memperdalam pemahaman bersama`,D:`Hanya menguntungkan peserta didik yang pasif`}},
+    ],
+    soalUraian: [
+      {no:1, soal:`Jelaskan pemahamanmu tentang ${topik} dengan menggunakan contoh yang kamu temukan dalam kehidupan sehari-hari! Gunakan minimal 3 kalimat yang jelas dan runtut.`},
+      {no:2, soal:`Buatlah peta pikiran (mind map) sederhana yang menggambarkan hubungan antara ${topik} dengan konsep-konsep lain yang telah kamu pelajari! Jelaskan setiap hubungan yang kamu gambarkan.`},
+      {no:3, soal:`Tuliskan refleksimu: apa yang paling menarik dari ${topik} yang baru saja kamu pelajari? Apa tantangan yang kamu hadapi? Bagaimana rencana belajarmu ke depan untuk topik ini?`},
+    ],
+  };
+
+  const soalHOTS = [
+    {no:1, soal:`Evaluasi pernyataan berikut: "${topik} hanya relevan dalam konteks akademis." Setuju atau tidak setuju? Berikan argumen kritis yang didukung dengan bukti atau contoh nyata!`, levelBloom:'Evaluasi'},
+    {no:2, soal:`Analisis bagaimana pemahaman tentang ${topik} dapat membantu seseorang membuat keputusan yang lebih baik dalam kehidupan nyata! Gunakan penalaran yang logis dan sistematis.`, levelBloom:'Analisis'},
+    {no:3, soal:`Rancanglah sebuah proyek mini yang memanfaatkan konsep ${topik} untuk memecahkan masalah nyata di lingkungan sekolah atau masyarakat sekitarmu! Jelaskan langkah-langkah pelaksanaannya.`, levelBloom:'Kreasi'},
+    {no:4, soal:`Bandingkan dan kontraskan dua cara yang berbeda dalam memahami ${topik}! Mana yang menurut kamu lebih efektif dan mengapa? Dukung pendapatmu dengan argumen yang kuat.`, levelBloom:'Analisis'},
+    {no:5, soal:`Kembangkan sebuah ide kreatif untuk mengenalkan konsep ${topik} kepada adik kelasmu yang lebih muda menggunakan media atau metode yang menarik dan mudah dipahami!`, levelBloom:'Kreasi'},
+  ];
+
+  return { materi, lkpd, soalHOTS,
+    daftarPustaka: [
+      `Kemendikbudristek. (2022). <em>Capaian Pembelajaran Kurikulum Nasional</em>. Jakarta: Kemendikbudristek RI.`,
+      `Kemendikbudristek. (2022). <em>Panduan Pembelajaran dan Asesmen</em>. Jakarta: Kemendikbudristek RI.`,
+      `Kemendikbudristek. (2023). <em>Modul Ajar ${mapel}</em>. Jakarta: Pusat Perbukuan Kemendikbudristek.`,
+      `Anderson, L.W. &amp; Krathwohl, D.R. (2001). <em>A Taxonomy for Learning, Teaching, and Assessing</em>. New York: Longman.`,
+      `Tomlinson, C.A. (2014). <em>The Differentiated Classroom: Responding to the Needs of All Learners</em>. ASCD.`,
+    ],
+    diferensiasi: {
+      konten: `Diferensiasi konten dilakukan dengan menyediakan materi ${topik} dalam berbagai format: teks, visual, audio, dan multimedia. Peserta didik dengan gaya belajar berbeda diberikan pilihan sumber belajar yang sesuai, sementara tingkat kerumitan materi disesuaikan dengan kesiapan belajar masing-masing peserta didik.`,
+      proses: `Diferensiasi proses dilakukan melalui variasi aktivitas pembelajaran. Peserta didik dengan pencapaian tinggi diberikan tantangan eksplorasi mandiri, sementara peserta didik yang membutuhkan dukungan mendapatkan scaffolding yang lebih intensif. Kelompok belajar dibentuk secara fleksibel berdasarkan kebutuhan dan minat.`,
+      produk: `Diferensiasi produk memberikan kebebasan kepada peserta didik untuk mendemonstrasikan pemahaman ${topik} melalui berbagai format: laporan tertulis, presentasi lisan, poster, video pendek, infografis, atau proyek kreatif lainnya. Setiap produk dinilai menggunakan rubrik yang memuat kriteria yang jelas dan adil.`,
+    },
+  };
+}
+
+// ── RENDER ───────────────────────────────────────────────────
+function trI(label,val){return`<tr><td style="width:35%;padding:6px 9px;font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;vertical-align:top">${label}</td><td style="padding:6px 9px;border:1px solid #ccc;font-size:11px;vertical-align:top">${val||'—'}</td></tr>`;}
+
+const profilDesc = {
+  'Keimanan dan Ketakwaan terhadap Tuhan Yang Maha Esa':'Peserta didik senantiasa beriman dan bertakwa kepada Tuhan YME, menjalankan ibadah, dan berakhlak mulia dalam kehidupan sehari-hari.',
+  'Kewargaan':'Peserta didik memiliki rasa cinta tanah air, bangga terhadap identitas nasional, dan berkontribusi aktif bagi masyarakat.',
+  'Penalaran Kritis':'Peserta didik mampu berpikir kritis, logis, analitis, dan sistematis dalam menghadapi berbagai permasalahan.',
+  'Kreativitas':'Peserta didik mampu menghasilkan karya orisinal, berpikir divergen, dan menemukan solusi inovatif.',
+  'Kolaborasi':'Peserta didik mampu bekerja sama secara efektif dalam tim yang beragam, saling menghargai, dan berkontribusi optimal.',
+  'Kemandirian':'Peserta didik memiliki inisiatif belajar mandiri, mampu mengelola diri, dan bertanggung jawab atas proses belajarnya.',
+  'Kesehatan':'Peserta didik menyadari pentingnya kesehatan fisik dan mental serta mempraktikkan gaya hidup sehat dan aktif.',
+  'Komunikasi':'Peserta didik mampu mengomunikasikan ide, gagasan, dan perasaan secara efektif dalam berbagai konteks dan media.',
+};
+
+function renderDoc(data, id, keg, as, lamp){
+  const tgl = new Date().toLocaleDateString('id-ID',{year:'numeric',month:'long',day:'numeric'});
+  const ket = ['Religius','','','Nasionalisme','Disiplin','KSE','Motivasi','Apersepsi','Literasi','HOTS'];
+  const sem = data.semester==='1'?'Semester 1 (Ganjil)':'Semester 2 (Genap)';
+
+  return `
 <div class="rh">
   <div style="font-size:10px;color:#888;margin-bottom:3px">DOKUMEN RESMI SEKOLAH — DINAS PENDIDIKAN</div>
   <h1>RENCANA PEMBELAJARAN MENDALAM (RPM)</h1>
@@ -588,7 +544,7 @@ function renderDoc(data,gen){
   ${trI('Nama Guru / Penyusun',data.namaGuru)}
   ${trI('Mata Pelajaran',data.mapel)}
   ${trI('Fase / Kelas',data.fase+' / Kelas '+data.kelas)}
-  ${trI('Semester',data.semester==='1'?'Semester 1 (Ganjil)':'Semester 2 (Genap)')}
+  ${trI('Semester',sem)}
   ${trI('Alokasi Waktu',data.alokasiWaktu)}
   ${trI('Tahun Pelajaran',data.tahunPelajaran)}
   ${trI('Target Peserta Didik',data.targetPD)}
@@ -600,18 +556,18 @@ function renderDoc(data,gen){
 <div class="rsec">B. IDENTIFIKASI PEMBELAJARAN</div>
 <div class="rsub">B.1 Peserta Didik</div>
 <table class="rt">
-  ${trI('Pengetahuan Awal',safe(id.pengetahuanAwal))}
-  ${trI('Minat &amp; Karakteristik',safe(id.minatSiswa))}
-  ${trI('Latar Belakang Sosial-Budaya',safe(id.latarBelakang))}
-  ${trI('Kebutuhan Belajar Utama',safe(id.kebutuhanBelajar))}
+  ${trI('Pengetahuan Awal',id.pengetahuanAwal)}
+  ${trI('Minat &amp; Karakteristik',id.minatSiswa)}
+  ${trI('Latar Belakang Sosial-Budaya',id.latarBelakang)}
+  ${trI('Kebutuhan Belajar Utama',id.kebutuhanBelajar)}
 </table>
 <div class="rsub">B.2 Materi Pelajaran</div>
 <table class="rt">
   <tr><th>Jenis Pengetahuan</th><th>Uraian Konten</th></tr>
-  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Faktual</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(id.faktual)}</td></tr>
-  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Konseptual</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(id.konseptual)}</td></tr>
-  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Prosedural</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(id.prosedural)}</td></tr>
-  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Metakognitif</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(id.metakognitif)}</td></tr>
+  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Faktual</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${id.faktual}</td></tr>
+  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Konseptual</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${id.konseptual}</td></tr>
+  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Prosedural</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${id.prosedural}</td></tr>
+  <tr><td style="font-weight:600;background:#f8f9fa;border:1px solid #ccc;font-size:11px;padding:6px 9px">Metakognitif</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${id.metakognitif}</td></tr>
 </table>
 <div class="rsub">B.3 Dimensi Profil Lulusan</div>
 <table class="rt">
@@ -622,12 +578,12 @@ function renderDoc(data,gen){
 <div class="rsec">C. DESAIN PEMBELAJARAN</div>
 <table class="rt">
   ${trI('Capaian Pembelajaran',data.cp)}
-  ${trI('Lintas Disiplin Ilmu',safe(id.lintasDisiplin))}
+  ${trI('Lintas Disiplin Ilmu',id.lintasDisiplin)}
   ${trI('Tujuan Pembelajaran',data.tujuan)}
-  ${trI('Topik Pembelajaran',safe(id.topikPembelajaran))}
+  ${trI('Topik Pembelajaran',data.topik)}
   ${trI('Praktik Pedagogis',data.model+(data.metode.length?' dengan metode: '+data.metode.join(', '):''))}
-  ${trI('Kemitraan Pembelajaran','Orang tua/wali sebagai mitra pendampingan di rumah; narasumber dari lingkungan sekitar; komunitas belajar guru; perpustakaan daerah.')}
-  ${trI('Lingkungan Belajar (Fisik)','Ruang kelas tertata kolaboratif, sudut baca, area diskusi kelompok, dan papan display karya siswa.')}
+  ${trI('Kemitraan Pembelajaran','Orang tua/wali sebagai mitra pendampingan di rumah; narasumber dari lingkungan sekitar; komunitas belajar guru; perpustakaan daerah dan digital.')}
+  ${trI('Lingkungan Belajar (Fisik)','Ruang kelas tertata kolaboratif, sudut baca, area diskusi kelompok, dan papan display karya peserta didik.')}
   ${trI('Lingkungan Belajar (Virtual)','Platform digital: Google Classroom, YouTube Edu, Quizizz, Padlet, Canva for Education, Mentimeter.')}
   ${trI('Lingkungan Belajar (Budaya)','Budaya kelas inklusif, saling menghargai, berani bertanya, dan terbuka terhadap perbedaan pendapat.')}
 </table>
@@ -635,112 +591,108 @@ function renderDoc(data,gen){
 <div class="rsec">D. PETA PENGALAMAN BELAJAR MURID</div>
 <table class="rt">
   <tr><th>Dimensi Pengalaman</th><th>Deskripsi Aktivitas</th></tr>
-  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">🌱 Mengalami</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(keg.petaPengalaman?.mengalami)}</td></tr>
-  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">❓ Bertanya</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(keg.petaPengalaman?.bertanya)}</td></tr>
-  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">🔍 Mengeksplorasi</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(keg.petaPengalaman?.mengeksplorasi)}</td></tr>
-  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">🪞 Merefleksi</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(keg.petaPengalaman?.merefleksi)}</td></tr>
-  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">💡 Mengaplikasikan</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${safe(keg.petaPengalaman?.mengaplikasikan)}</td></tr>
+  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">🌱 Mengalami</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${keg.petaPengalaman.mengalami}</td></tr>
+  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">❓ Bertanya</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${keg.petaPengalaman.bertanya}</td></tr>
+  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">🔍 Mengeksplorasi</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${keg.petaPengalaman.mengeksplorasi}</td></tr>
+  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">🪞 Merefleksi</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${keg.petaPengalaman.merefleksi}</td></tr>
+  <tr><td style="font-weight:600;background:#e8f4ea;border:1px solid #ccc;font-size:11px;padding:6px 9px">💡 Mengaplikasikan</td><td style="border:1px solid #ccc;font-size:11px;padding:6px 9px">${keg.petaPengalaman.mengaplikasikan}</td></tr>
 </table>
 
 <div class="rsec">E. LANGKAH PEMBELAJARAN</div>
-<div class="rsub">E.1 Kegiatan Pendahuluan (${safe(keg.pendahuluan?.durasi,'±15 menit')})</div>
-<p style="font-size:11px;line-height:1.8;margin-bottom:9px;text-align:justify">${safe(keg.pendahuluan?.narasi)}</p>
+<div class="rsub">E.1 Kegiatan Pendahuluan (${keg.pendahuluan.durasi})</div>
+<p style="font-size:11px;line-height:1.8;margin-bottom:9px;text-align:justify">${keg.pendahuluan.narasi}</p>
 <table class="rt" style="margin-bottom:14px">
   <tr><th style="width:28px">#</th><th colspan="2">Aktivitas</th><th style="width:82px">Keterangan</th></tr>
-  ${safeA(keg.pendahuluan?.langkah).map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px" colspan="2">${l}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px;color:#555">${ket[i]||''}</td></tr>`).join('')}
+  ${keg.pendahuluan.langkah.map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px" colspan="2">${l}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px;color:#555">${ket[i]||''}</td></tr>`).join('')}
 </table>
 
-<div class="rsub">E.2 Kegiatan Inti (${safe(keg.inti?.durasi,'±90 menit')})</div>
+<div class="rsub">E.2 Kegiatan Inti (${keg.inti.durasi})</div>
 <div style="font-weight:700;color:#1a3a5c;font-size:12px;margin:8px 0 5px;padding:4px 9px;background:#dbeafe;border-left:3px solid #1a3a5c">📖 Fase MEMAHAMI</div>
-<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${safe(keg.inti?.memahami?.narasi)}</p>
-<table class="rt">${safeA(keg.inti?.memahami?.langkah).map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
+<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${keg.inti.memahami.narasi}</p>
+<table class="rt">${keg.inti.memahami.langkah.map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
 
 <div style="font-weight:700;color:#1a3a5c;font-size:12px;margin:8px 0 5px;padding:4px 9px;background:#dcfce7;border-left:3px solid #166534">⚙️ Fase MENGAPLIKASI</div>
-<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${safe(keg.inti?.mengaplikasi?.narasi)}</p>
-<table class="rt">${safeA(keg.inti?.mengaplikasi?.langkah).map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
+<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${keg.inti.mengaplikasi.narasi}</p>
+<table class="rt">${keg.inti.mengaplikasi.langkah.map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
 
 <div style="font-weight:700;color:#1a3a5c;font-size:12px;margin:8px 0 5px;padding:4px 9px;background:#fef9c3;border-left:3px solid #854d0e">🪞 Fase MEREFLEKSI</div>
-<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${safe(keg.inti?.merefleksi?.narasi)}</p>
-<table class="rt">${safeA(keg.inti?.merefleksi?.langkah).map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
+<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${keg.inti.merefleksi.narasi}</p>
+<table class="rt">${keg.inti.merefleksi.langkah.map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
 
-<div class="rsub">E.3 Kegiatan Penutup (${safe(keg.penutup?.durasi,'±15 menit')})</div>
-<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${safe(keg.penutup?.narasi)}</p>
-<table class="rt">${safeA(keg.penutup?.langkah).map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
+<div class="rsub">E.3 Kegiatan Penutup (${keg.penutup.durasi})</div>
+<p style="font-size:11px;line-height:1.8;margin-bottom:7px;text-align:justify">${keg.penutup.narasi}</p>
+<table class="rt">${keg.penutup.langkah.map((l,i)=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;text-align:center;font-size:11px;width:28px;background:#f8f9fa">${i+1}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:11px">${l}</td></tr>`).join('')}</table>
 
 <div class="rsec">F. ASESMEN PEMBELAJARAN</div>
 <div class="rsub">F.1 Asesmen Awal (Diagnostik)</div>
 <table class="rt">
   <tr><th style="width:28px">#</th><th>Pertanyaan Diagnostik</th><th>Jawaban yang Diharapkan</th></tr>
-  ${safeA(as.diagnostik).map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px;color:#555">${s.jawaban}</td></tr>`).join('')}
+  ${as.diagnostik.map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px;color:#555">${s.jawaban}</td></tr>`).join('')}
 </table>
-
 <div class="rsub">F.2 Asesmen Formatif</div>
-<p style="font-size:11px;line-height:1.8;margin-bottom:9px">${safe(as.formatif?.observasi)}</p>
+<p style="font-size:11px;line-height:1.8;margin-bottom:9px">${as.formatif.observasi}</p>
 <table class="rt">
   <tr><th>Aspek</th><th>Sangat Baik (4)</th><th>Baik (3)</th><th>Cukup (2)</th><th>Perlu Bimbingan (1)</th></tr>
-  ${safeA(as.formatif?.rubrik).map(r=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;font-weight:600;background:#f8f9fa;font-size:10px">${r.aspek}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.sangat_baik}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.baik}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.cukup}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.perlu_bimbingan}</td></tr>`).join('')}
+  ${as.formatif.rubrik.map(r=>`<tr><td style="border:1px solid #ccc;padding:5px 8px;font-weight:600;background:#f8f9fa;font-size:10px">${r.aspek}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.sangat_baik}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.baik}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.cukup}</td><td style="border:1px solid #ccc;padding:5px 8px;font-size:10px">${r.perlu_bimbingan}</td></tr>`).join('')}
 </table>
-
 <div class="rsub">F.3 Asesmen Sumatif — Pilihan Ganda</div>
 <table class="rt">
   <tr><th style="width:25px">#</th><th>Soal</th><th>Opsi Jawaban</th><th style="width:45px">Kunci</th></tr>
-  ${safeA(as.sumatif?.pilganSoal).map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:10px">A. ${s.opsi?.A||''}<br>B. ${s.opsi?.B||''}<br>C. ${s.opsi?.C||''}<br>D. ${s.opsi?.D||''}</td><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-weight:700;font-size:13px;color:#166534">${s.kunci}</td></tr>`).join('')}
+  ${as.sumatif.pilganSoal.map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:10px">A. ${s.opsi.A}<br>B. ${s.opsi.B}<br>C. ${s.opsi.C}<br>D. ${s.opsi.D}</td><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-weight:700;font-size:13px;color:#166534">${s.kunci}</td></tr>`).join('')}
 </table>
-
 <div class="rsub">F.4 Asesmen Sumatif — Soal Esai</div>
 <table class="rt">
   <tr><th style="width:25px">#</th><th>Soal</th><th>Pedoman Penskoran</th><th style="width:45px">Bobot</th></tr>
-  ${safeA(as.sumatif?.esaiSoal).map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:10px;color:#555">${s.pedoman}</td><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.bobot}</td></tr>`).join('')}
+  ${as.sumatif.esaiSoal.map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:10px;color:#555">${s.pedoman}</td><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.bobot}</td></tr>`).join('')}
 </table>
-
 <div class="rsub">F.5 Program Remedial &amp; Pengayaan</div>
 <table class="rt">
-  ${trI('Program Remedial',safe(as.remedial))}
-  ${trI('Program Pengayaan',safe(as.pengayaan))}
+  ${trI('Program Remedial',as.remedial)}
+  ${trI('Program Pengayaan',as.pengayaan)}
 </table>
 
 <div class="rsec">G. DIFERENSIASI PEMBELAJARAN</div>
 <table class="rt">
-  ${trI('Diferensiasi Konten',safe(lamp.diferensiasi?.konten))}
-  ${trI('Diferensiasi Proses',safe(lamp.diferensiasi?.proses))}
-  ${trI('Diferensiasi Produk',safe(lamp.diferensiasi?.produk))}
+  ${trI('Diferensiasi Konten',lamp.diferensiasi.konten)}
+  ${trI('Diferensiasi Proses',lamp.diferensiasi.proses)}
+  ${trI('Diferensiasi Produk',lamp.diferensiasi.produk)}
 </table>
 
 <div class="rsec">H. LAMPIRAN</div>
 <div class="rsub">Lampiran 1 — Materi Ringkas</div>
-<p style="font-size:11px;line-height:1.9;text-align:justify">${safe(lamp.materiRingkas)}</p>
+<p style="font-size:11px;line-height:1.9;text-align:justify">${lamp.materi.replace(/\n\n/g,'</p><p style="font-size:11px;line-height:1.9;text-align:justify;margin-top:8px">')}</p>
 
 <div class="rsub">Lampiran 2 — Lembar Kerja Peserta Didik (LKPD)</div>
 <div style="border:2px solid #1a3a5c;padding:14px;margin-bottom:10px;border-radius:5px">
   <div style="text-align:center;font-weight:800;font-size:13px;color:#1a3a5c;text-transform:uppercase;margin-bottom:6px">LEMBAR KERJA PESERTA DIDIK</div>
-  <div style="text-align:center;font-size:12px;font-weight:600;margin-bottom:14px">${safe(lamp.lkpd?.judul)}</div>
+  <div style="text-align:center;font-size:12px;font-weight:600;margin-bottom:14px">${lamp.lkpd.judul}</div>
   <table class="rt">${trI('Nama Peserta Didik','____________________________')}${trI('Kelas / No. Absen','____________ / ____________')}${trI('Tanggal','____________________________')}</table>
   <div style="font-weight:700;font-size:11px;margin:10px 0 5px;color:#1a3a5c">📌 Tujuan:</div>
-  <ol style="font-size:11px;margin:0 0 9px 18px;line-height:1.8">${safeA(lamp.lkpd?.tujuan).map(t=>`<li>${t}</li>`).join('')}</ol>
+  <ol style="font-size:11px;margin:0 0 9px 18px;line-height:1.8">${lamp.lkpd.tujuan.map(t=>`<li>${t}</li>`).join('')}</ol>
   <div style="font-weight:700;font-size:11px;margin:9px 0 5px;color:#1a3a5c">📋 Petunjuk:</div>
-  <ol style="font-size:11px;margin:0 0 9px 18px;line-height:1.8">${safeA(lamp.lkpd?.petunjuk).map(p=>`<li>${p}</li>`).join('')}</ol>
+  <ol style="font-size:11px;margin:0 0 9px 18px;line-height:1.8">${lamp.lkpd.petunjuk.map(p=>`<li>${p}</li>`).join('')}</ol>
   <div style="font-weight:700;font-size:11px;margin:9px 0 5px;color:#1a3a5c">I. Pilihan Ganda</div>
-  ${safeA(lamp.lkpd?.soalPG).map(s=>`<div style="margin-bottom:11px;font-size:11px"><p style="margin:0 0 3px;font-weight:600">${s.no}. ${s.soal}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding-left:10px"><div>A. ${s.opsi?.A||''}</div><div>B. ${s.opsi?.B||''}</div><div>C. ${s.opsi?.C||''}</div><div>D. ${s.opsi?.D||''}</div></div><div style="margin-top:3px;padding-left:10px">Jawaban: ______</div></div>`).join('')}
+  ${lamp.lkpd.soalPG.map(s=>`<div style="margin-bottom:11px;font-size:11px"><p style="margin:0 0 3px;font-weight:600">${s.no}. ${s.soal}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding-left:10px"><div>A. ${s.opsi.A}</div><div>B. ${s.opsi.B}</div><div>C. ${s.opsi.C}</div><div>D. ${s.opsi.D}</div></div><div style="margin-top:3px;padding-left:10px">Jawaban: ______</div></div>`).join('')}
   <div style="font-weight:700;font-size:11px;margin:12px 0 5px;color:#1a3a5c">II. Soal Uraian</div>
-  ${safeA(lamp.lkpd?.soalUraian).map(s=>`<div style="margin-bottom:14px;font-size:11px"><p style="font-weight:600;margin:0 0 3px">${s.no}. ${s.soal}</p><div style="border:1px solid #ccc;min-height:55px;padding:7px;border-radius:3px;color:#bbb;font-size:10px;font-style:italic">Ruang jawaban peserta didik</div></div>`).join('')}
+  ${lamp.lkpd.soalUraian.map(s=>`<div style="margin-bottom:14px;font-size:11px"><p style="font-weight:600;margin:0 0 3px">${s.no}. ${s.soal}</p><div style="border:1px solid #ccc;min-height:60px;padding:7px;border-radius:3px;color:#bbb;font-size:10px;font-style:italic">Ruang jawaban peserta didik</div></div>`).join('')}
 </div>
 
 <div class="rsub">Lampiran 3 — Soal HOTS Tambahan</div>
 <table class="rt">
   <tr><th style="width:25px">#</th><th>Soal HOTS</th><th style="width:80px">Level Bloom</th></tr>
-  ${safeA(lamp.soalHOTS).map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:10px;text-align:center;background:#fef9c3;font-weight:600">${s.levelBloom}</td></tr>`).join('')}
+  ${lamp.soalHOTS.map(s=>`<tr><td style="border:1px solid #ccc;padding:6px 8px;text-align:center;font-size:11px;font-weight:700">${s.no}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:11px">${s.soal}</td><td style="border:1px solid #ccc;padding:6px 8px;font-size:10px;text-align:center;background:#fef9c3;font-weight:600">${s.levelBloom}</td></tr>`).join('')}
 </table>
 
 <div class="rsub">Lampiran 4 — Daftar Pustaka</div>
-<ol style="font-size:11px;line-height:2;margin-left:18px">${safeA(lamp.daftarPustaka).map(d=>`<li>${d}</li>`).join('')}</ol>
+<ol style="font-size:11px;line-height:2;margin-left:18px">${lamp.daftarPustaka.map(d=>`<li>${d}</li>`).join('')}</ol>
 
 <div class="rfooter">
   <div class="rfs">
     <div style="font-size:11px;color:#555">Mengetahui,</div>
     <div style="font-size:11px;color:#555">Kepala Sekolah</div>
     <div style="height:46px"></div>
-    <div class="rn">${safe(data.namaKepsek,'Kepala Sekolah')}</div>
-    <div style="font-size:10px;color:#555">NIP. ${safe(data.nipKepsek,'...........................')}</div>
+    <div class="rn">${data.namaKepsek||'Kepala Sekolah'}</div>
+    <div style="font-size:10px;color:#555">NIP. ${data.nipKepsek||'...........................'}</div>
   </div>
   <div class="rfs">
     <div style="font-size:11px;color:#555">${data.namaSekolah},</div>
@@ -748,66 +700,76 @@ function renderDoc(data,gen){
     <div style="font-size:11px;color:#555;margin-top:3px">Guru Mata Pelajaran</div>
     <div style="height:46px"></div>
     <div class="rn">${data.namaGuru}</div>
-    <div style="font-size:10px;color:#555">NIP. ${safe(data.nipGuru,'...........................')}</div>
+    <div style="font-size:10px;color:#555">NIP. ${data.nipGuru||'...........................'}</div>
   </div>
 </div>`;
 }
 
-// ── Form submit ──────────────────────────────────────────────
-document.getElementById('rform').addEventListener('submit',async e=>{
+// ── SUBMIT ────────────────────────────────────────────────────
+document.getElementById('rform').addEventListener('submit', e => {
   e.preventDefault();
-  if(!validate()){
-    document.querySelector('.fe input,.fe select,.fe textarea')?.scrollIntoView({behavior:'smooth',block:'center'});
-    return;
-  }
-  const data={
-    namaGuru:document.getElementById('f-guru').value.trim(),
-    nipGuru:document.getElementById('f-nip-guru').value.trim(),
-    namaSekolah:document.getElementById('f-sekolah').value.trim(),
-    namaKepsek:document.getElementById('f-kepsek').value.trim(),
-    nipKepsek:document.getElementById('f-nip-kepsek').value.trim(),
-    tahunPelajaran:document.getElementById('f-tahun').value.trim(),
-    mapel:document.getElementById('f-mapel').value.trim(),
-    fase:document.getElementById('f-fase').value,
-    kelas:document.getElementById('f-kelas').value.trim(),
-    semester:document.getElementById('f-sem').value,
-    alokasiWaktu:document.getElementById('f-waktu').value.trim(),
-    targetPD:document.getElementById('f-target').value,
-    cp:document.getElementById('f-cp').value.trim(),
-    tujuan:document.getElementById('f-tujuan').value.trim(),
-    model:document.getElementById('f-model').value,
-    profilLulusan:getChecked('profil-container'),
-    metode:getChecked('metode-container'),
-    sarana:getSarana(),
-  };
-  if(data.profilLulusan.length===0)data.profilLulusan=['Penalaran Kritis','Kolaborasi','Kemandirian'];
+  if(!validate()){ document.querySelector('.fe input,.fe select,.fe textarea')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
 
-  document.getElementById('ov').classList.add('show');
-  try{
-    const gen=await generate(data);
-    document.getElementById('rdoc').innerHTML=renderDoc(data,gen);
-    document.getElementById('ov').classList.remove('show');
-    document.getElementById('fwrap').style.display='none';
-    document.getElementById('rout').style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
-  }catch(err){
-    document.getElementById('ov').classList.remove('show');
-    alert('❌ Gagal generate RPM.\n\nPesan: '+err.message+'\n\nPastikan:\n• API key Google Gemini sudah diisi dengan benar\n• Koneksi internet aktif\n• Coba klik "Uji Koneksi" terlebih dahulu');
-  }
+  const data = {
+    namaGuru: val('f-guru'), nipGuru: val('f-nip-guru'),
+    namaSekolah: val('f-sekolah'), namaKepsek: val('f-kepsek'), nipKepsek: val('f-nip-kepsek'),
+    tahunPelajaran: val('f-tahun'), mapel: val('f-mapel'), fase: val('f-fase'),
+    kelas: val('f-kelas'), semester: val('f-sem'), alokasiWaktu: val('f-waktu'),
+    targetPD: val('f-target'), cp: val('f-cp'), tujuan: val('f-tujuan'), topik: val('f-topik'),
+    model: val('f-model'),
+    profilLulusan: getChecked('profil-container'),
+    metode: getChecked('metode-container'),
+    sarana: getSarana(),
+  };
+  if(data.profilLulusan.length===0) data.profilLulusan=['Penalaran Kritis','Kolaborasi','Kemandirian'];
+
+  // Tampilkan loading & simulasi progres
+  v('ov').classList.add('show');
+  const steps = [
+    [1,'Menganalisis data pembelajaran...'],
+    [2,'Merancang kegiatan pembelajaran...'],
+    [3,'Menyusun instrumen asesmen...'],
+    [4,'Membuat LKPD & lampiran...'],
+    [5,'Memfinalisasi dokumen RPM...'],
+  ];
+  let si=0;
+  const interval = setInterval(()=>{
+    if(si<steps.length){ setStep(steps[si][0]); v('ltxt').textContent=steps[si][1]; si++; }
+  }, 400);
+
+  // Generate semua konten (synchronous, wrapped async untuk UI)
+  setTimeout(()=>{
+    clearInterval(interval);
+    try{
+      const id   = genIdentifikasi(data.mapel, data.fase, data.kelas, data.cp, data.targetPD, data.topik);
+      const keg  = genLangkah(data.mapel, data.model, data.metode, data.topik, data.tujuan, data.alokasiWaktu, data.fase);
+      const as   = genAsesmen(data.mapel, data.topik, data.kelas, data.cp);
+      const lamp = genLampiran(data.mapel, data.topik, data.kelas, data.cp, data.model);
+
+      v('rdoc').innerHTML = renderDoc(data, id, keg, as, lamp);
+      v('ov').classList.remove('show');
+      v('fwrap').style.display='none';
+      v('rout').style.display='block';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }catch(err){
+      v('ov').classList.remove('show');
+      alert('Terjadi kesalahan: '+err.message);
+    }
+  }, 2200);
 });
 
-// ── Export ───────────────────────────────────────────────────
+// ── EXPORT ────────────────────────────────────────────────────
 function copyGDocs(){
-  navigator.clipboard.writeText(document.getElementById('rdoc').innerText).then(()=>{
+  navigator.clipboard.writeText(v('rdoc').innerText).then(()=>{
     window.open('https://docs.google.com/document/create','_blank');
-    setTimeout(()=>alert('✅ RPM disalin!\nBuka Google Docs → Ctrl+V untuk menempel.\nTip: Unduh Word untuk format tabel yang lebih rapi.'),600);
+    setTimeout(()=>alert('✅ RPM disalin!\nBuka Google Docs → Ctrl+V.\nTip: Gunakan "Unduh Word" untuk format tabel yang lebih rapi.'),600);
   }).catch(()=>alert('Gunakan tombol Unduh Word.'));
 }
 function dlWord(){
-  const c=document.getElementById('rdoc').innerHTML;
-  const m=document.getElementById('f-mapel').value.replace(/\s+/g,'_');
-  const k=document.getElementById('f-kelas').value;
-  const w=`<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'><style>body{font-family:'Times New Roman',serif;font-size:12pt;margin:2cm}table{border-collapse:collapse;width:100%}td,th{border:1px solid #999;padding:6pt;font-size:10pt}th{background:#1a3a5c;color:white}.rsec{background:#1a3a5c;color:white;padding:5pt 10pt;font-weight:bold}.rsub{background:#e8f0fa;color:#1a3a5c;padding:4pt 10pt;font-weight:bold}</style></head><body>${c}</body></html>`;
+  const c=v('rdoc').innerHTML;
+  const m=val('f-mapel').replace(/\s+/g,'_');
+  const k=val('f-kelas');
+  const w=`<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'><style>body{font-family:'Times New Roman',serif;font-size:12pt;margin:2cm}table{border-collapse:collapse;width:100%}td,th{border:1px solid #999;padding:6pt;font-size:10pt}th{background:#1a3a5c;color:white}.rsec{background:#1a3a5c;color:white;padding:5pt 10pt;font-weight:bold;display:block;margin:12pt 0 6pt}.rsub{background:#e8f0fa;color:#1a3a5c;padding:4pt 10pt;font-weight:bold;display:block;margin:8pt 0 4pt}</style></head><body>${c}</body></html>`;
   const b=new Blob(['\ufeff'+w],{type:'application/msword'});
   const u=URL.createObjectURL(b);
   const a=document.createElement('a');
@@ -815,8 +777,8 @@ function dlWord(){
   a.click();URL.revokeObjectURL(u);
 }
 function resetApp(){
-  document.getElementById('rout').style.display='none';
-  document.getElementById('fwrap').style.display='block';
+  v('rout').style.display='none';
+  v('fwrap').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
